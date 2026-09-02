@@ -20,24 +20,70 @@ st.markdown("""
         .stApp { direction: rtl; }
         div[data-testid="stMetricValue"], div[data-testid="stMetricLabel"] { text-align: right; }
         
-        /* تجميل شريط التنقل (الراديو) ليصبح كالأزرار الأفقية */
-        div.row-widget.stRadio > div {
+        /* =========================================
+           🎮 تأثير البلي ستيشن (PlayStation Hover Effect)
+           ========================================= */
+        
+        /* تنسيق حاوية الأزرار لتكون بالمنتصف */
+        div.stRadio > div[role="radiogroup"] {
             display: flex;
             flex-direction: row;
             justify-content: center;
-            gap: 10px;
-            background-color: #1e293b;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #334155;
+            gap: 15px;
+            background-color: transparent;
+            padding: 20px 10px;
         }
         
+        /* تنسيق كل زر (في حالته الطبيعية غير المؤشرة) */
+        div.stRadio > div[role="radiogroup"] > label {
+            background-color: #1e293b !important;
+            border: 2px solid #334155 !important;
+            padding: 12px 25px !important;
+            border-radius: 15px !important;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* تأثير ارتداد ناعم ورهيب */
+            cursor: pointer !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+        }
+        
+        /* إخفاء الدائرة الكلاسيكية مالت الراديو */
+        div.stRadio > div[role="radiogroup"] > label > div:first-child {
+            display: none !important;
+        }
+        
+        /* 🚀 تأثير التأشير بالماوس (Hover) - التكبير والتوهج */
+        div.stRadio > div[role="radiogroup"] > label:hover {
+            transform: scale(1.15) translateY(-5px) !important; /* يكبر ويصعد ليگدام */
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important; /* توهج أزرق PS */
+            border-color: #93c5fd !important;
+            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.6) !important; /* ضوء مشع خلف الزر */
+            z-index: 10 !important;
+        }
+        
+        /* تلوين وتثخين النص عند التأشير */
+        div.stRadio > div[role="radiogroup"] > label:hover p {
+            color: #ffffff !important;
+            font-weight: 900 !important;
+        }
+        
+        /* ✅ الخيار المحدّد حالياً (القسم المفتوح) */
+        div.stRadio > div[role="radiogroup"] > label[data-checked="true"] {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; /* لون أخضر للقسم الفعال */
+            transform: scale(1.05) !important;
+            border-color: #34d399 !important;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4) !important;
+        }
+        div.stRadio > div[role="radiogroup"] > label[data-checked="true"] p {
+            color: #ffffff !important;
+            font-weight: bold !important;
+        }
+        /* ========================================= */
+
         /* تجميل زر تطبيق الفلاتر */
         div[data-testid="stFormSubmitButton"] > button {
             height: 50px;
             font-size: 18px !important;
             font-weight: bold !important;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
             color: #ffffff !important;
             border: none;
             border-radius: 8px !important;
@@ -46,7 +92,7 @@ st.markdown("""
         }
         div[data-testid="stFormSubmitButton"] > button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -68,7 +114,7 @@ with col_btn:
 st.markdown("---")
 
 # ==========================================
-# 3. شريط التابات (التصميم القديم المحسن)
+# 3. شريط التابات (بتأثير البلي ستيشن الجديد)
 # ==========================================
 if 'active_tab' not in st.session_state:
     st.session_state.active_tab = 'gov'
