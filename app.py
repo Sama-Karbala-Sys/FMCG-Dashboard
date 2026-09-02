@@ -11,17 +11,16 @@ import traceback
 # 1. إعدادات الصفحة واللغة
 # ==========================================
 try:
-    st.set_page_config(page_title="FMCG Dashboard", layout="wide")
+    st.set_page_config(page_title="FMCG Dashboard - PS Edition", layout="wide")
 except Exception:
     pass
 
 st.markdown("""
     <style>
         /* =========================================
-           🎮 خلفية البلي ستيشن الهادئة (PS Background)
+           🎮 خلفية البلي ستيشن الهادئة والعميقة (PS Vibe)
            ========================================= */
         .stApp { 
-            /* تدرج لوني عميق ومريح للعين يشبه قوائم الـ PS */
             background: radial-gradient(circle at 50% 120%, #0f4c81 0%, #03142e 50%, #01060e 100%) !important;
             background-attachment: fixed !important;
             color: #e2e8f0; 
@@ -33,21 +32,20 @@ st.markdown("""
         }
 
         /* =========================================
-           🚀 حركة الطفرة فقط للتابات (الأقسام)
+           🚀 1. التابات (الأقسام العلوية) - تأثير PS Hover
            ========================================= */
         div.row-widget.stRadio > div {
             display: flex; flex-direction: row; justify-content: center; gap: 15px;
-            background-color: transparent; padding: 20px 10px;
+            background-color: transparent; padding: 20px 10px; flex-wrap: wrap;
         }
         div.stRadio > div[role="radiogroup"] > label {
             background-color: rgba(30, 41, 59, 0.8) !important; border: 1px solid #334155 !important;
-            padding: 12px 25px !important; border-radius: 12px !important;
+            padding: 12px 20px !important; border-radius: 12px !important;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
             cursor: pointer !important; box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
         }
         div.stRadio > div[role="radiogroup"] > label > div:first-child { display: none !important; }
         
-        /* تأثير الطفرة للزر من تمرر الماوس */
         div.stRadio > div[role="radiogroup"] > label:hover {
             transform: scale(1.15) translateY(-5px) !important;
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
@@ -56,7 +54,6 @@ st.markdown("""
         }
         div.stRadio > div[role="radiogroup"] > label:hover p { color: #ffffff !important; font-weight: 900 !important; }
         
-        /* القسم المفتوح حالياً */
         div.stRadio > div[role="radiogroup"] > label[data-checked="true"] {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
             transform: scale(1.05) !important; border-color: #34d399 !important;
@@ -65,24 +62,62 @@ st.markdown("""
         div.stRadio > div[role="radiogroup"] > label[data-checked="true"] p { color: #ffffff !important; font-weight: bold !important; }
 
         /* =========================================
-           🚀 حركة الطفرة لزر تطبيق الفلاتر
+           🚀 2. الكروت الإحصائية (Metrics)
            ========================================= */
-        div[data-testid="stFormSubmitButton"] > button {
-            height: 50px; font-size: 18px !important; font-weight: bold !important;
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-            color: #ffffff !important; border: none; border-radius: 8px !important;
-            width: 100%; transition: all 0.3s ease-in-out;
+        div[data-testid="metric-container"] {
+            background-color: rgba(30, 41, 59, 0.6) !important;
+            border: 1px solid #334155; padding: 20px; border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        div[data-testid="stFormSubmitButton"] > button:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.5);
+        div[data-testid="metric-container"]:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.9)) !important;
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4); border-color: #38bdf8; z-index: 5;
         }
 
-        /* بقية العناصر (بدون حركات مزعجة) */
-        div[data-testid="metric-container"], .stPlotlyChart, div[data-testid="stExpander"], div[data-testid="stForm"] {
-            background-color: rgba(30, 41, 59, 0.6) !important;
-            border-radius: 12px;
-            border: 1px solid #334155;
+        /* =========================================
+           🚀 3. الرسوم البيانية (Charts)
+           ========================================= */
+        .stPlotlyChart {
+            background-color: rgba(30, 41, 59, 0.4) !important;
+            border-radius: 16px; padding: 15px; border: 1px solid #334155;
+            transition: all 0.4s ease;
+        }
+        .stPlotlyChart:hover {
+            transform: scale(1.03) translateY(-5px);
+            background-color: rgba(30, 41, 59, 0.8) !important;
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); border-color: #a78bfa; z-index: 5;
+        }
+
+        /* =========================================
+           🚀 4. الفلاتر والقوائم المنسدلة (Selectboxes)
+           ========================================= */
+        div[data-baseweb="select"] > div, input {
+            transition: all 0.3s ease; border-radius: 10px !important;
+            background-color: rgba(30, 41, 59, 0.7) !important; border: 1px solid #475569 !important;
+        }
+        div[data-baseweb="select"] > div:hover, input:hover {
+            transform: scale(1.03); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4) !important; border-color: #34d399 !important;
+        }
+
+        /* =========================================
+           🚀 5. زر التطبيق والجداول المطوية
+           ========================================= */
+        div[data-testid="stExpander"] {
+            background-color: rgba(30, 41, 59, 0.5) !important; border-radius: 12px; border: 1px solid #334155; transition: all 0.3s ease;
+        }
+        div[data-testid="stExpander"]:hover {
+            transform: translateY(-3px) scale(1.01); background-color: rgba(30, 41, 59, 0.8) !important;
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2); border-color: #fbbf24;
+        }
+        div[data-testid="stFormSubmitButton"] > button {
+            height: 50px; font-size: 18px !important; font-weight: bold !important;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important; color: #ffffff !important;
+            border: none; border-radius: 8px !important; width: 100%; transition: all 0.3s ease-in-out;
+        }
+        div[data-testid="stFormSubmitButton"] > button:hover {
+            transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 15px rgba(99, 102, 241, 0.5);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -94,7 +129,7 @@ col_title, col_btn = st.columns([4, 1])
 with col_title:
     st.title("🎮 نظام إدارة المبيعات والمخازن | FMCG")
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    st.caption(f"🔵 حالة النظام: PS Mode | السرعة: فائقة | آخر تحديث: {current_time}")
+    st.caption(f"🔵 حالة النظام: PS Interactive Mode | النسخة الكلاسيكية | آخر تحديث: {current_time}")
 with col_btn:
     st.write("") 
     if st.button("🔄 تحديث البيانات (Sync)", use_container_width=True):
@@ -104,7 +139,7 @@ with col_btn:
 st.markdown("---")
 
 # ==========================================
-# 3. شريط التابات
+# 3. شريط التابات (نظام البلي ستيشن) - تم إضافة عام المجزر
 # ==========================================
 if 'active_tab' not in st.session_state:
     st.session_state.active_tab = 'gov'
@@ -113,6 +148,7 @@ tabs_dict = {
     "📍 المحافظات": "gov",
     "🧊 الثلاجات": "frz",
     "❄️ مخازن المجزر": "slh",
+    "📊 عام المجزر": "slh_gen",  # <--- القسم الجديد
     "📦 المواد الأولية": "mat",
     "🛒 مشتريات المصنفات": "pur_cat",
     "🔪 مشتريات المجزر": "pur_slh"
@@ -129,201 +165,261 @@ st.session_state.active_tab = tabs_dict[selected_tab_name]
 st.markdown("---")
 
 # ==========================================
-# 4. دوال السحب المضادة للتعليق
+# 4. دوال سحب البيانات (المحرك المضمون الأصلي)
 # ==========================================
 def fetch_sheet_csv(url):
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    for _ in range(3):
+    try:
+        return pd.read_csv(url, on_bad_lines='skip')
+    except Exception:
         try:
-            res = requests.get(url, headers=headers, timeout=12)
+            headers = {'User-Agent': 'Mozilla/5.0'}
+            res = requests.get(url, headers=headers, timeout=20)
             if res.status_code == 200:
                 res.encoding = 'utf-8'
-                df = pd.read_csv(io.StringIO(res.text), on_bad_lines='skip')
-                if not df.empty: return df
-        except Exception: pass
-        time.sleep(1)
-    try: return pd.read_csv(url, on_bad_lines='skip')
-    except Exception: return pd.DataFrame()
+                return pd.read_csv(io.StringIO(res.text), on_bad_lines='skip')
+            else:
+                return pd.DataFrame()
+        except Exception:
+            return pd.DataFrame()
 
-def clean_columns(df):
-    df.columns = [str(c).replace('\ufeff', '').replace('\n', '').replace('\r', '').strip() for c in df.columns]
-    return df
+# داله القسم الجديد (عام المجزر)
+@st.cache_data(ttl=600)
+def load_slh_general_data():
+    # 🔴🔴🔴 هام جداً: ضع رابط ملف "عام المجزر" بصيغة CSV هنا 🔴🔴🔴
+    url = "ضع_رابط_شيت_عام_المجزر_هنا" 
+    
+    try:
+        df = fetch_sheet_csv(url)
+        if df.empty: return pd.DataFrame()
+        # تنظيف مبدئي للأعمدة
+        df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
+        return df
+    except Exception:
+        return pd.DataFrame()
 
 @st.cache_data(ttl=600)
 def load_gov_data():
-    df_raw = fetch_sheet_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRdYYKBv1JCC2q5pcgJAc6QyQGJc9Lsz9EaPD8t2HC5KADIoVzkFCJ-6JaF4tbdfw/pub?output=csv")
-    res = {'df': pd.DataFrame(), 'c_date': None, 'c_gov': None, 'c_agent': None, 'c_item': None, 'c_cat': None, 'c_ff': None, 'c_label': None, 'c_ton': None, 'c_qty': None}
-    if df_raw.empty: return res
-    df = clean_columns(df_raw.copy())
-    
-    res['c_date'] = next((c for c in df.columns if 'تاريخ' in c or 'date' in c.lower()), None)
-    res['c_gov'] = next((c for c in df.columns if 'محافظ' in c), None)
-    res['c_agent'] = next((c for c in df.columns if 'زبون' in c or 'وكيل' in c), None)
-    res['c_item'] = next((c for c in df.columns if 'مادة' in c or 'product' in c.lower()), None)
-    res['c_cat'] = 'Category' if 'Category' in df.columns else next((c for c in df.columns if 'تصنيف' in c), None)
-    res['c_ff'] = next((c for c in df.columns if 'item type' in c.lower() or 'طازج' in c or 'fresh' in c.lower()), None)
-    res['c_label'] = next((c for c in df.columns if 'own' in c.lower() or 'label' in c.lower()), None)
-    res['c_ton'] = next((c for c in df.columns if 'طن' in c), None)
-    res['c_qty'] = next((c for c in df.columns if 'عدد' in c), None)
+    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRdYYKBv1JCC2q5pcgJAc6QyQGJc9Lsz9EaPD8t2HC5KADIoVzkFCJ-6JaF4tbdfw/pub?output=csv"
+    try:
+        df = fetch_sheet_csv(url)
+        if df.empty: return pd.DataFrame(), None, None, None, None, None, None, None, None, None
+        
+        df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
+        col_date = next((c for c in df.columns if 'تاريخ' in c or 'date' in c.lower()), None)
+        col_gov = next((c for c in df.columns if 'محافظ' in c), None)
+        col_agent = next((c for c in df.columns if 'زبون' in c or 'وكيل' in c), None)
+        col_item = next((c for c in df.columns if 'مادة' in c or 'product' in c.lower()), None)
+        col_cat = 'Category' if 'Category' in df.columns else next((c for c in df.columns if 'تصنيف' in c), None)
+        col_ff = next((c for c in df.columns if 'item type' in c.lower() or 'طازج' in c or 'fresh' in c.lower()), None)
+        col_label = next((c for c in df.columns if 'own' in c.lower() or 'label' in c.lower()), None)
+        col_ton = next((c for c in df.columns if 'طن' in c), None)
+        col_qty = next((c for c in df.columns if 'عدد' in c), None)
 
-    for c in [res['c_ton'], res['c_qty']]:
-        if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True), errors='coerce').fillna(0)
-    res['df'] = df
-    return res
+        if col_date: df[col_date] = pd.to_datetime(df[col_date], errors='coerce')
+        for c in [col_ton, col_qty]:
+            if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True), errors='coerce').fillna(0)
+        for c in [col_gov, col_agent, col_item, col_cat, col_ff, col_label]:
+            if c and c in df.columns: df[c] = df[c].fillna('غير مصنف')
+                
+        return df, col_date, col_gov, col_agent, col_item, col_cat, col_ff, col_label, col_ton, col_qty
+    except Exception:
+        return pd.DataFrame(), None, None, None, None, None, None, None, None, None
 
 @st.cache_data(ttl=600)
 def load_freezer_data():
-    df_raw = fetch_sheet_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQDphmbL58bqGdSFFFpU7NfVtAefvztGcjf5zPX8FBl5Rj3tW6H8vySo3T8CXGzyQ/pub?output=csv")
-    res = {'df': pd.DataFrame(), 'c_item': None, 'c_frz': None, 'c_start': None, 'c_prod': None, 'c_sold': None, 'c_short': None, 'c_final': None}
-    if df_raw.empty: return res
-    df = clean_columns(df_raw.copy())
-    
-    res['c_item'] = next((c for c in df.columns if 'ماد' in c), None)
-    res['c_frz'] = next((c for c in df.columns if 'ثلاج' in c), None)
-    res['c_start'] = next((c for c in df.columns if 'رصيد' in c), None)
-    res['c_prod'] = next((c for c in df.columns if 'نتاج' in c), None)
-    res['c_sold'] = next((c for c in df.columns if 'مباع' in c or 'صادر' in c), None)
-    res['c_short'] = next((c for c in df.columns if 'نقص' in c), None)
-    res['c_final'] = next((c for c in df.columns if 'نهائي' in c), None)
-    
-    for c in [res['c_start'], res['c_prod'], res['c_sold'], res['c_short'], res['c_final']]:
-        if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True), errors='coerce').fillna(0)
-    res['df'] = df
-    return res
+    url_freezer = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQDphmbL58bqGdSFFFpU7NfVtAefvztGcjf5zPX8FBl5Rj3tW6H8vySo3T8CXGzyQ/pub?output=csv"
+    try:
+        df = fetch_sheet_csv(url_freezer)
+        if df.empty: return pd.DataFrame(), None, None, None, None, None, None, None
+        
+        df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
+        col_item = next((c for c in df.columns if 'ماد' in c), None)
+        col_frz = next((c for c in df.columns if 'ثلاج' in c), None)
+        col_start = next((c for c in df.columns if 'رصيد' in c), None)
+        col_prod = next((c for c in df.columns if 'نتاج' in c), None)
+        col_sold = next((c for c in df.columns if 'مباع' in c or 'صادر' in c), None)
+        col_short = next((c for c in df.columns if 'نقص' in c), None)
+        col_final = next((c for c in df.columns if 'نهائي' in c), None)
+        
+        num_cols = [col_start, col_prod, col_sold, col_short, col_final]
+        for c in num_cols:
+            if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True), errors='coerce').fillna(0)
+        if col_item and col_item in df.columns: df[col_item] = df[col_item].fillna('غير مصنف')
+        if col_frz and col_frz in df.columns: df[col_frz] = df[col_frz].fillna('غير مصنف')
+        
+        return df, col_item, col_frz, col_start, col_prod, col_sold, col_short, col_final
+    except Exception:
+        return pd.DataFrame(), None, None, None, None, None, None, None
 
 @st.cache_data(ttl=600)
-def load_slh_data():
-    df_raw = fetch_sheet_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQHSv4SF_rudpU2753hjWpkwyuiQ59RHr3zfiZZb43IOmdf1PZvytibN_Dc5Oxwxg/pub?output=csv")
-    res = {'df': pd.DataFrame(), 'c_date': None, 'c_qty': None, 'c_prev': None, 'c_prod': None, 'c_sold': None, 'c_item': None, 'c_code': None}
-    if df_raw.empty: return res
-    df = clean_columns(df_raw.copy())
-    
-    res['c_date'] = next((c for c in df.columns if 'Date' in str(c) or 'تاريخ' in str(c)), None)
-    res['c_qty'] = next((c for c in df.columns if 'Qty' in str(c) or 'كمية' in str(c)), None)
-    res['c_prev'] = next((c for c in df.columns if 'Previous' in str(c) or 'رصيد' in str(c)), None)
-    res['c_prod'] = next((c for c in df.columns if 'Production' in str(c) or 'إنتاج' in str(c)), None)
-    res['c_sold'] = next((c for c in df.columns if 'Sold' in str(c) or 'مباع' in str(c)), None)
-    res['c_item'] = next((c for c in df.columns if 'Item Name' in str(c) or 'المادة' in str(c)), None)
-    res['c_code'] = next((c for c in df.columns if 'Code' in str(c) or 'كود' in str(c)), None)
-    
-    for c in [res['c_qty'], res['c_prev'], res['c_prod'], res['c_sold']]:
-        if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True), errors='coerce').fillna(0)
-    res['df'] = df
-    return res
+def load_slaughterhouse_data():
+    url_slh = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQHSv4SF_rudpU2753hjWpkwyuiQ59RHr3zfiZZb43IOmdf1PZvytibN_Dc5Oxwxg/pub?output=csv"
+    try:
+        df = fetch_sheet_csv(url_slh)
+        if df.empty: return pd.DataFrame(), None, None, None, None, None, None, None
+        
+        df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
+        col_date = next((c for c in df.columns if 'Date' in str(c) or 'تاريخ' in str(c)), None)
+        col_qty = next((c for c in df.columns if 'Qty' in str(c) or 'كمية' in str(c)), None)
+        col_prev = next((c for c in df.columns if 'Previous' in str(c) or 'رصيد' in str(c)), None)
+        col_prod = next((c for c in df.columns if 'Production' in str(c) or 'إنتاج' in str(c)), None)
+        col_sold = next((c for c in df.columns if 'Sold' in str(c) or 'مباع' in str(c)), None)
+        col_item = next((c for c in df.columns if 'Item Name' in str(c) or 'المادة' in str(c)), None)
+        col_code = next((c for c in df.columns if 'Code' in str(c) or 'كود' in str(c)), None)
+        
+        if col_date: df[col_date] = pd.to_datetime(df[col_date], errors='coerce')
+        for c in [col_qty, col_prev, col_prod, col_sold]:
+            if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True), errors='coerce').fillna(0)
+        if col_item and col_item in df.columns: df[col_item] = df[col_item].fillna('غير مصنف')
+        
+        return df, col_date, col_qty, col_prev, col_prod, col_sold, col_item, col_code
+    except Exception:
+        return pd.DataFrame(), None, None, None, None, None, None, None
 
 @st.cache_data(ttl=600)
-def load_mat_data():
-    df_raw = fetch_sheet_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTyT8AIVzoC083IILST_hw5Q4j29tMBoYpdA568JyzSuJuOnX0BKq0MwOa9GE0aBQ/pub?output=csv")
-    res = {'df': pd.DataFrame(), 'c_date': None, 'c_type': None, 'c_dept': None, 'c_item': None, 'c_qty': None, 'c_bal': None, 'c_cat': None}
-    if df_raw.empty: return res
-    
-    cols_str = ' '.join(df_raw.columns.astype(str))
-    if 'المادة' not in cols_str and 'الكمية' not in cols_str:
-        header_idx = None
-        for idx, row in df_raw.head(15).iterrows():
-            row_str = ' '.join(str(val) for val in row.values)
-            if 'المادة' in row_str or 'الكمية' in row_str or 'تاريخ' in row_str:
-                header_idx = idx
-                break
-        if header_idx is not None:
-            df_raw.columns = df_raw.iloc[header_idx]
-            df_raw = df_raw.iloc[header_idx + 1:].reset_index(drop=True)
+def load_raw_materials_data():
+    url_mat = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTyT8AIVzoC083IILST_hw5Q4j29tMBoYpdA568JyzSuJuOnX0BKq0MwOa9GE0aBQ/pub?output=csv"
+    try:
+        df = fetch_sheet_csv(url_mat)
+        if df.empty: return pd.DataFrame(), None, None, None, None, None, None, None
+        
+        cols_str = ' '.join(df.columns.astype(str))
+        if 'المادة' not in cols_str and 'الكمية' not in cols_str:
+            header_idx = None
+            for idx, row in df.head(15).iterrows():
+                row_str = ' '.join(str(val) for val in row.values)
+                if 'المادة' in row_str or 'الكمية' in row_str or 'تاريخ' in row_str:
+                    header_idx = idx
+                    break
+            if header_idx is not None:
+                df.columns = df.iloc[header_idx]
+                df = df.iloc[header_idx + 1:].reset_index(drop=True)
 
-    df = clean_columns(df_raw.copy())
-    
-    res['c_date'] = next((c for c in df.columns if 'تاريخ' in c), None)
-    res['c_type'] = next((c for c in df.columns if 'نوع' in c), None)
-    res['c_dept'] = next((c for c in df.columns if 'قسم' in c), None)
-    res['c_item'] = next((c for c in df.columns if 'مادة' in c and 'كود' not in c), None)
-    res['c_qty'] = next((c for c in df.columns if 'كمية' in c), None)
-    res['c_bal'] = next((c for c in df.columns if 'رصيد' in c and 'حالي' in c), None)
-    res['c_cat'] = next((c for c in df.columns if 'تصنيف' in c), None)
-    
-    for c in [res['c_qty'], res['c_bal']]:
-        if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True).replace('-', '0'), errors='coerce').fillna(0)
-    res['df'] = df
-    return res
+        df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
+        col_date = next((c for c in df.columns if 'تاريخ' in c), None)
+        col_type = next((c for c in df.columns if 'نوع' in c), None)
+        col_dept = next((c for c in df.columns if 'قسم' in c), None)
+        col_item = next((c for c in df.columns if 'مادة' in c and 'كود' not in c), None)
+        col_qty = next((c for c in df.columns if 'كمية' in c), None)
+        col_bal = next((c for c in df.columns if 'رصيد' in c and 'حالي' in c), None)
+        col_cat = next((c for c in df.columns if 'تصنيف' in c), None)
+        
+        for c in [col_qty, col_bal]:
+            if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True).replace('-', '0'), errors='coerce').fillna(0)
+        if col_date and col_date in df.columns: df[col_date] = pd.to_datetime(df[col_date], errors='coerce')
+
+        return df, col_date, col_type, col_dept, col_item, col_qty, col_bal, col_cat
+    except Exception:
+        return pd.DataFrame(), None, None, None, None, None, None, None
 
 @st.cache_data(ttl=600)
 def load_pur_cat_data():
-    df_raw = fetch_sheet_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSQ5lFKwIUSMCyYxRvpRMUl3PDlO6JY-x07zi0FgH9O2Atbryh4TjEpH7UGxtQ_Cw/pub?output=csv")
-    res = {'df': pd.DataFrame(), 'c_emp': None, 'c_arr': None, 'c_ord_date': None, 'c_comp': None, 'c_req': None, 'c_cur': None, 'c_unit': None, 'c_item': None}
-    if df_raw.empty: return res
-    df = clean_columns(df_raw.copy())
-    
-    res['c_emp'] = next((c for c in df.columns if 'الموظف' in c), None)
-    res['c_arr'] = next((c for c in df.columns if 'وصول' in c), None)
-    res['c_ord_date'] = next((c for c in df.columns if 'تاريخ الطلب' in c), None)
-    res['c_comp'] = next((c for c in df.columns if 'الشركة' in c), None)
-    res['c_req'] = next((c for c in df.columns if 'المطلوب' in c), None)
-    res['c_cur'] = next((c for c in df.columns if 'الرصيد' in c), None)
-    res['c_unit'] = next((c for c in df.columns if 'الوحدة' in c), None)
-    res['c_item'] = next((c for c in df.columns if 'اسم المادة' in c or 'المادة' in c), None)
-    
-    for c in [res['c_req'], res['c_cur']]:
-        if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True).replace('', '0'), errors='coerce').fillna(0)
-    res['df'] = df
-    return res
+    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQ5lFKwIUSMCyYxRvpRMUl3PDlO6JY-x07zi0FgH9O2Atbryh4TjEpH7UGxtQ_Cw/pub?output=csv"
+    try:
+        df = fetch_sheet_csv(url)
+        if df.empty: return pd.DataFrame(), None, None, None, None, None, None, None, None
+        
+        df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
+        col_emp = next((c for c in df.columns if 'الموظف' in c), None)
+        col_arrival = next((c for c in df.columns if 'وصول' in c), None)
+        col_ord_date = next((c for c in df.columns if 'تاريخ الطلب' in c), None)
+        col_comp = next((c for c in df.columns if 'الشركة' in c), None)
+        col_req = next((c for c in df.columns if 'المطلوب' in c), None)
+        col_cur = next((c for c in df.columns if 'الرصيد' in c), None)
+        col_unit = next((c for c in df.columns if 'الوحدة' in c), None)
+        col_item = next((c for c in df.columns if 'اسم المادة' in c or 'المادة' in c), None)
+        
+        for c in [col_req, col_cur]:
+            if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True).replace('', '0'), errors='coerce').fillna(0)
+        if col_ord_date and col_ord_date in df.columns: df[col_ord_date] = pd.to_datetime(df[col_ord_date], errors='coerce', dayfirst=True)
+        for c in [col_emp, col_comp, col_unit, col_item, col_arrival]:
+            if c and c in df.columns: df[c] = df[c].fillna('غير محدد')
+                
+        return df, col_emp, col_arrival, col_ord_date, col_comp, col_req, col_cur, col_unit, col_item
+    except Exception:
+        return pd.DataFrame(), None, None, None, None, None, None, None, None
 
 @st.cache_data(ttl=600)
 def load_pur_slh_data():
-    df_raw = fetch_sheet_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRfd4_W6y4OJ_Ztbn9d1oJwFz9JOpgyExrOjdnG8Y5ecBDZZctHbo-099vM6-5tdw/pub?output=csv")
-    res = {'df': pd.DataFrame(), 'c_arr': None, 'c_ord_date': None, 'c_comp': None, 'c_req': None, 'c_cur': None, 'c_unit': None, 'c_dept': None, 'c_cat': None, 'c_item': None}
-    if df_raw.empty: return res
-    df = clean_columns(df_raw.copy())
-    
-    res['c_arr'] = next((c for c in df.columns if 'وصول' in c), None)
-    res['c_ord_date'] = next((c for c in df.columns if 'تاريخ' in c), None)
-    res['c_comp'] = next((c for c in df.columns if 'الشركة' in c or 'شركة' in c), None)
-    res['c_req'] = next((c for c in df.columns if 'المطلوب' in c), None)
-    res['c_cur'] = next((c for c in df.columns if 'الرصيد' in c), None)
-    res['c_unit'] = next((c for c in df.columns if 'الوحدة' in c), None)
-    res['c_dept'] = next((c for c in df.columns if 'القسم' in c or 'قسم' in c), None)
-    res['c_cat'] = next((c for c in df.columns if 'تصنيف' in c), None)
-    res['c_item'] = next((c for c in df.columns if 'اسم المادة' in c or ('المادة' in c and 'تصنيف' not in c)), None)
+    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfd4_W6y4OJ_Ztbn9d1oJwFz9JOpgyExrOjdnG8Y5ecBDZZctHbo-099vM6-5tdw/pub?output=csv"
+    try:
+        df = fetch_sheet_csv(url)
+        if df.empty: return pd.DataFrame(), None, None, None, None, None, None, None, None, None
+        
+        df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
+        c_arr = next((c for c in df.columns if 'وصول' in c), None)
+        c_ord_date = next((c for c in df.columns if 'تاريخ' in c), None)
+        c_comp = next((c for c in df.columns if 'الشركة' in c or 'شركة' in c), None)
+        c_req = next((c for c in df.columns if 'المطلوب' in c), None)
+        c_cur = next((c for c in df.columns if 'الرصيد' in c), None)
+        c_unit = next((c for c in df.columns if 'الوحدة' in c), None)
+        c_dept = next((c for c in df.columns if 'القسم' in c or 'قسم' in c), None)
+        c_cat = next((c for c in df.columns if 'تصنيف' in c), None)
+        c_item = next((c for c in df.columns if 'اسم المادة' in c or ('المادة' in c and 'تصنيف' not in c)), None)
 
-    for c in [res['c_req'], res['c_cur']]:
-        if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True).replace('', '0'), errors='coerce').fillna(0)
-    res['df'] = df
-    return res
+        for c in [c_req, c_cur]:
+            if c and c in df.columns: df[c] = pd.to_numeric(df[c].astype(str).str.replace(r'[^\d\.-]', '', regex=True).replace('', '0'), errors='coerce').fillna(0)
+        if c_ord_date and c_ord_date in df.columns: df[c_ord_date] = pd.to_datetime(df[c_ord_date], errors='coerce', dayfirst=True)
+        for c in [c_arr, c_comp, c_unit, c_dept, c_cat, c_item]:
+            if c and c in df.columns: df[c] = df[c].fillna('غير محدد')
 
+        return df, c_arr, c_ord_date, c_comp, c_req, c_cur, c_unit, c_dept, c_cat, c_item
+    except Exception:
+        return pd.DataFrame(), None, None, None, None, None, None, None, None, None
 
 # ==========================================
-# 5. منطق عرض الأقسام (التصميم القديم النظيف)
+# 5. منطق عرض الأقسام (الكود الأصلي الكلاسيكي)
 # ==========================================
 try:
+    # ------------------ 📊 قسم عام المجزر (الجديد) ------------------
+    if st.session_state.active_tab == 'slh_gen':
+        st.title("📊 عام المجزر (التقرير الشامل)")
+        
+        df_slh_gen = load_slh_general_data()
+        
+        if df_slh_gen.empty:
+            st.info("⚠️ يرجى إضافة رابط الـ CSV الخاص بشيت 'عام المجزر' في الكود (دالة load_slh_general_data) ليتم عرض البيانات هنا.")
+        else:
+            st.success("✅ تم سحب البيانات بنجاح.")
+            st.markdown("""
+            **ملاحظة:** لأن هذا الشيت مصمم كتقرير إكسل متقدم (يحتوي على جداول متعددة وخلايا مدمجة في صفحة واحدة)، 
+            فإن النظام يعرضه كجدول بيانات كامل. يمكنك تصفح وتحميل التقرير من هنا.
+            """)
+            
+            with st.expander("📋 عرض بيانات عام المجزر", expanded=True):
+                st.download_button(label="📥 تحميل التقرير (CSV)", data=df_slh_gen.to_csv(index=False).encode('utf-8'), file_name="slh_general_data.csv", mime="text/csv")
+                st.dataframe(df_slh_gen, use_container_width=True)
+
     # ------------------ قسم المحافظات ------------------
-    if st.session_state.active_tab == 'gov':
-        data = load_gov_data()
-        df_gov = data['df']
-        col_date, col_gov, col_agent, col_item, col_cat, col_ff, col_label, col_ton, col_qty = data['c_date'], data['c_gov'], data['c_agent'], data['c_item'], data['c_cat'], data['c_ff'], data['c_label'], data['c_ton'], data['c_qty']
+    elif st.session_state.active_tab == 'gov':
+        df_gov, col_date, col_gov, col_agent, col_item, col_cat, col_ff, col_label, col_ton, col_qty = load_gov_data()
         
         if not df_gov.empty:
             filtered_df = df_gov.copy()
             with st.expander("🔍 فلاتر قسم المحافظات", expanded=True):
                 with st.form("gov_form"):
                     f1, f2, f3, f4 = st.columns(4)
-                    use_date = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
                     if col_date and col_date in filtered_df.columns:
-                        filtered_df[col_date] = pd.to_datetime(filtered_df[col_date], errors='coerce')
                         valid_dates = filtered_df[col_date].dropna()
                         if not valid_dates.empty:
                             min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            date_range = f1.date_input("اختر الفترة", [min_d, max_d], min_value=min_d, max_value=max_d)
-                        else: date_range = []
-                    else: date_range = []
+                            use_date = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="gov_chk")
+                            if use_date:
+                                date_range = f1.date_input("اختر الفترة", [min_d, max_d], min_value=min_d, max_value=max_d, key="gov_date")
+                                if len(date_range) == 2:
+                                    filtered_df = filtered_df[(filtered_df[col_date].dt.date >= date_range[0]) & (filtered_df[col_date].dt.date <= date_range[1])]
 
-                    sel_gov = f2.multiselect("📍 المحافظة", filtered_df[col_gov].unique() if col_gov and col_gov in filtered_df.columns else [])
-                    sel_ff = f3.multiselect("❄️ طازج أو مجمد", filtered_df[col_ff].unique() if col_ff and col_ff in filtered_df.columns else [])
-                    sel_label = f4.multiselect("🏷️ العلامة التجارية", filtered_df[col_label].unique() if col_label and col_label in filtered_df.columns else [])
-                    
+                    if col_gov and col_gov in filtered_df.columns:
+                        sel_gov = f2.multiselect("📍 المحافظة", filtered_df[col_gov].unique(), key="gov_gov")
+                        if sel_gov: filtered_df = filtered_df[filtered_df[col_gov].isin(sel_gov)]
+                    if col_ff and col_ff in filtered_df.columns:
+                        sel_ff = f3.multiselect("❄️ طازج أو مجمد", filtered_df[col_ff].unique(), key="gov_ff")
+                        if sel_ff: filtered_df = filtered_df[filtered_df[col_ff].isin(sel_ff)]
+                    if col_label and col_label in filtered_df.columns:
+                        sel_label = f4.multiselect("🏷️ العلامة التجارية", filtered_df[col_label].unique(), key="gov_lbl")
+                        if sel_label: filtered_df = filtered_df[filtered_df[col_label].isin(sel_label)]
+
                     submitted_gov = st.form_submit_button("🚀 تطبيق الفلاتر")
-
-            if use_date and len(date_range) == 2 and col_date:
-                filtered_df = filtered_df[(filtered_df[col_date].dt.date >= date_range[0]) & (filtered_df[col_date].dt.date <= date_range[1])]
-            if sel_gov: filtered_df = filtered_df[filtered_df[col_gov].isin(sel_gov)]
-            if sel_ff: filtered_df = filtered_df[filtered_df[col_ff].isin(sel_ff)]
-            if sel_label: filtered_df = filtered_df[filtered_df[col_label].isin(sel_label)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             c1, c2, c3, c4 = st.columns(4)
@@ -337,19 +433,22 @@ try:
                 pie1, pie2, pie3 = st.columns(3)
                 with pie1:
                     if col_cat and col_ton and col_cat in filtered_df.columns and col_ton in filtered_df.columns:
-                        fig_cat = px.pie(filtered_df.groupby(col_cat)[col_ton].sum().reset_index(), values=col_ton, names=col_cat, hole=0.4, title="🛒 التصنيف (Category)")
+                        cat_data = filtered_df.groupby(col_cat)[col_ton].sum().reset_index()
+                        fig_cat = px.pie(cat_data, values=col_ton, names=col_cat, hole=0.4, title="🛒 التصنيف (Category)")
                         fig_cat.update_traces(textposition='inside', textinfo='percent')
-                        fig_cat.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
+                        fig_cat.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_cat, use_container_width=True)
                 with pie2:
                     if col_ff and col_ton and col_ff in filtered_df.columns and col_ton in filtered_df.columns:
-                        fig_ff = px.pie(filtered_df.groupby(col_ff)[col_ton].sum().reset_index(), values=col_ton, names=col_ff, color_discrete_sequence=['#3b82f6', '#06b6d4'], title="❄️ طازج ومجمد")
+                        ff_data = filtered_df.groupby(col_ff)[col_ton].sum().reset_index()
+                        fig_ff = px.pie(ff_data, values=col_ton, names=col_ff, color_discrete_sequence=['#3b82f6', '#06b6d4'], title="❄️ طازج ومجمد")
                         fig_ff.update_traces(textposition='inside', textinfo='percent')
                         fig_ff.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_ff, use_container_width=True)
                 with pie3:
                     if col_label and col_ton and col_label in filtered_df.columns and col_ton in filtered_df.columns:
-                        fig_label = px.pie(filtered_df.groupby(col_label)[col_ton].sum().reset_index(), values=col_ton, names=col_label, color_discrete_sequence=['#f59e0b', '#ec4899'], title="🏷️ العلامة التجارية")
+                        label_data = filtered_df.groupby(col_label)[col_ton].sum().reset_index()
+                        fig_label = px.pie(label_data, values=col_ton, names=col_label, color_discrete_sequence=['#f59e0b', '#ec4899'], title="🏷️ العلامة التجارية")
                         fig_label.update_traces(textposition='inside', textinfo='percent')
                         fig_label.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_label, use_container_width=True)
@@ -358,19 +457,22 @@ try:
             st.markdown("---")
             try:
                 if col_gov and col_ton and col_gov in filtered_df.columns and col_ton in filtered_df.columns:
-                    fig_gov = px.bar(filtered_df.groupby(col_gov)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=True), x=col_ton, y=col_gov, orientation='h', color=col_gov, text_auto='.2s', title="📍 التوزيع حسب المحافظات")
+                    gov_data = filtered_df.groupby(col_gov)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=True)
+                    fig_gov = px.bar(gov_data, x=col_ton, y=col_gov, orientation='h', color=col_gov, text_auto='.2s', title="📍 التوزيع حسب المحافظات")
                     fig_gov.update_layout(showlegend=False, height=450, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_gov, use_container_width=True)
 
                 bar1, bar2 = st.columns(2)
                 with bar1:
                     if col_agent and col_ton and col_agent in filtered_df.columns and col_ton in filtered_df.columns:
-                        fig_agent = px.bar(filtered_df.groupby(col_agent)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=False).head(10), x=col_agent, y=col_ton, color=col_ton, color_continuous_scale='Purples', text_auto='.2s', title="🏆 أفضل 10 زبائن (طن)")
+                        agent_data = filtered_df.groupby(col_agent)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=False).head(10)
+                        fig_agent = px.bar(agent_data, x=col_agent, y=col_ton, color=col_ton, color_continuous_scale='Purples', text_auto='.2s', title="🏆 أفضل 10 زبائن (طن)")
                         fig_agent.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_agent, use_container_width=True)
                 with bar2:
                     if col_item and col_qty and col_item in filtered_df.columns and col_qty in filtered_df.columns:
-                        fig_item = px.bar(filtered_df.groupby(col_item)[col_qty].sum().reset_index().sort_values(by=col_qty, ascending=False).head(10), x=col_item, y=col_qty, color=col_qty, color_continuous_scale='Reds', text_auto='.2s', title="📦 أفضل 10 مواد مبيعاً (عدد)")
+                        item_data = filtered_df.groupby(col_item)[col_qty].sum().reset_index().sort_values(by=col_qty, ascending=False).head(10)
+                        fig_item = px.bar(item_data, x=col_item, y=col_qty, color=col_qty, color_continuous_scale='Reds', text_auto='.2s', title="📦 أفضل 10 مواد مبيعاً (عدد)")
                         fig_item.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_item, use_container_width=True)
             except Exception: pass
@@ -403,9 +505,7 @@ try:
 
     # ------------------ قسم الثلاجات ------------------
     elif st.session_state.active_tab == 'frz':
-        data = load_freezer_data()
-        df_frz = data['df']
-        c_item, c_frz, c_start, c_prod, c_sold, c_short, c_final = data['c_item'], data['c_frz'], data['c_start'], data['c_prod'], data['c_sold'], data['c_short'], data['c_final']
+        df_frz, c_item, c_frz, c_start, c_prod, c_sold, c_short, c_final = load_freezer_data()
         
         if not df_frz.empty:
             filtered_frz = df_frz.copy()
@@ -475,31 +575,28 @@ try:
 
     # ------------------ قسم المجزر ------------------
     elif st.session_state.active_tab == 'slh':
-        data = load_slaughterhouse_data()
-        df_slh = data['df']
-        c_date, c_qty, c_prev, c_prod, c_sold, c_item, c_code = data['c_date'], data['c_qty'], data['c_prev'], data['c_prod'], data['c_sold'], data['c_item'], data['c_code']
+        df_slh, c_date, c_qty, c_prev, c_prod, c_sold, c_item, c_code = load_slaughterhouse_data()
         
         if not df_slh.empty:
             filtered_slh = df_slh.copy()
             with st.expander("🔍 فلاتر مخازن المجزر", expanded=True):
                 with st.form("slh_form"):
                     f1, f2 = st.columns(2)
-                    use_date_slh = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
                     if c_date and c_date in filtered_slh.columns:
-                        filtered_slh[c_date] = pd.to_datetime(filtered_slh[c_date], errors='coerce')
                         valid_dates = filtered_slh[c_date].dropna()
                         if not valid_dates.empty:
                             min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            date_range = f1.date_input("تحديد فترة المجزر", [min_d, max_d], min_value=min_d, max_value=max_d)
-                        else: date_range = []
-                    else: date_range = []
+                            use_date_slh = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="slh_chk")
+                            if use_date_slh:
+                                date_range = f1.date_input("تحديد فترة المجزر", [min_d, max_d], min_value=min_d, max_value=max_d, key="slh_date")
+                                if len(date_range) == 2:
+                                    filtered_slh = filtered_slh[(filtered_slh[c_date].dt.date >= date_range[0]) & (filtered_slh[c_date].dt.date <= date_range[1])]
 
-                    sel_item = f2.multiselect("اختر المادة", filtered_slh[c_item].unique() if c_item and c_item in filtered_slh.columns else [])
+                    if c_item and c_item in filtered_slh.columns:
+                        sel_item = f2.multiselect("اختر المادة", filtered_slh[c_item].unique(), key="slh_item_sel")
+                        if sel_item: filtered_slh = filtered_slh[filtered_slh[c_item].isin(sel_item)]
+
                     submitted_slh = st.form_submit_button("🚀 تطبيق الفلاتر")
-
-            if use_date_slh and len(date_range) == 2 and c_date:
-                filtered_slh = filtered_slh[(filtered_slh[c_date].dt.date >= date_range[0]) & (filtered_slh[c_date].dt.date <= date_range[1])]
-            if sel_item: filtered_slh = filtered_slh[filtered_slh[c_item].isin(sel_item)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
@@ -530,6 +627,7 @@ try:
             except Exception: pass
                 
             st.markdown("---")
+
             try:
                 row1_c1, row1_c2 = st.columns(2)
                 with row1_c1:
@@ -568,42 +666,42 @@ try:
             with st.expander("📋 عرض جدول بيانات المجزر"):
                 csv_slh = filtered_slh.to_csv(index=False).encode('utf-8')
                 st.download_button(label="📥 تحميل جدول المجزر (CSV)", data=csv_slh, file_name="slaughterhouse_data.csv", mime="text/csv")
+                if c_date and c_date in filtered_slh.columns:
+                    filtered_slh[c_date] = filtered_slh[c_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_slh, use_container_width=True)
         else:
             st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
     # ------------------ قسم المواد الأولية ------------------
     elif st.session_state.active_tab == 'mat':
-        data = load_mat_data()
-        df_mat = data['df']
-        c_date, c_type, c_dept, c_item, c_qty, c_bal, c_cat = data['c_date'], data['c_type'], data['c_dept'], data['c_item'], data['c_qty'], data['c_bal'], data['c_cat']
+        df_mat, c_date, c_type, c_dept, c_item, c_qty, c_bal, c_cat = load_raw_materials_data()
         
         if not df_mat.empty:
             filtered_mat = df_mat.copy()
             with st.expander("📦 فلاتر المواد الأولية", expanded=True):
                 with st.form("mat_form"):
                     f1, f2, f3, f4 = st.columns(4)
-                    use_date_mat = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
                     if c_date and c_date in filtered_mat.columns:
-                        filtered_mat[c_date] = pd.to_datetime(filtered_mat[c_date], errors='coerce')
                         valid_dates = filtered_mat[c_date].dropna()
                         if not valid_dates.empty:
                             min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            date_range = f1.date_input("اختر الفترة", [min_d, max_d], min_value=min_d, max_value=max_d)
-                        else: date_range = []
-                    else: date_range = []
+                            use_date_mat = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="mat_chk")
+                            if use_date_mat:
+                                date_range = f1.date_input("اختر الفترة", [min_d, max_d], min_value=min_d, max_value=max_d, key="mat_date")
+                                if len(date_range) == 2:
+                                    filtered_mat = filtered_mat[(filtered_mat[c_date].dt.date >= date_range[0]) & (filtered_mat[c_date].dt.date <= date_range[1])]
 
-                    sel_dept = f2.multiselect("اختر القسم", filtered_mat[c_dept].unique() if c_dept and c_dept in filtered_mat.columns else [])
-                    sel_type = f3.multiselect("نوع الإذن", filtered_mat[c_type].unique() if c_type and c_type in filtered_mat.columns else [])
-                    sel_cat = f4.multiselect("التصنيف", filtered_mat[c_cat].unique() if c_cat and c_cat in filtered_mat.columns else [])
-                    
+                    if c_dept and c_dept in filtered_mat.columns:
+                        sel_dept = f2.multiselect("اختر القسم", filtered_mat[c_dept].unique(), key="mat_dept")
+                        if sel_dept: filtered_mat = filtered_mat[filtered_mat[c_dept].isin(sel_dept)]
+                    if c_type and c_type in filtered_mat.columns:
+                        sel_type = f3.multiselect("نوع الإذن", filtered_mat[c_type].unique(), key="mat_type")
+                        if sel_type: filtered_mat = filtered_mat[filtered_mat[c_type].isin(sel_type)]
+                    if c_cat and c_cat in filtered_mat.columns:
+                        sel_cat = f4.multiselect("التصنيف", filtered_mat[c_cat].unique(), key="mat_cat")
+                        if sel_cat: filtered_mat = filtered_mat[filtered_mat[c_cat].isin(sel_cat)]
+                        
                     submitted_mat = st.form_submit_button("🚀 تطبيق الفلاتر")
-
-            if use_date_mat and len(date_range) == 2 and c_date:
-                filtered_mat = filtered_mat[(filtered_mat[c_date].dt.date >= date_range[0]) & (filtered_mat[c_date].dt.date <= date_range[1])]
-            if sel_dept: filtered_mat = filtered_mat[filtered_mat[c_dept].isin(sel_dept)]
-            if sel_type: filtered_mat = filtered_mat[filtered_mat[c_type].isin(sel_type)]
-            if sel_cat: filtered_mat = filtered_mat[filtered_mat[c_cat].isin(sel_cat)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
@@ -667,36 +765,34 @@ try:
 
     # ------------------ قسم مشتريات المصنفات ------------------
     elif st.session_state.active_tab == 'pur_cat':
-        data = load_pur_cat_data()
-        df_pur = data['df']
-        c_emp, c_arr, c_ord_date, c_comp, c_req, c_cur, c_unit, c_item = data['c_emp'], data['c_arr'], data['c_ord_date'], data['c_comp'], data['c_req'], data['c_cur'], data['c_unit'], data['c_item']
+        df_pur, c_emp, c_arr, c_ord_date, c_comp, c_req, c_cur, c_unit, c_item = load_pur_cat_data()
         
         if not df_pur.empty:
             filtered_pur = df_pur.copy()
             with st.expander("🔍 فلاتر مشتريات المصنفات", expanded=True):
                 with st.form("pur_cat_form"):
                     f1, f2, f3, f4 = st.columns(4)
-                    use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False)
                     if c_ord_date and c_ord_date in filtered_pur.columns:
-                        filtered_pur[c_ord_date] = pd.to_datetime(filtered_pur[c_ord_date], errors='coerce')
                         valid_dates = filtered_pur[c_ord_date].dropna()
                         if not valid_dates.empty:
                             min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            date_range = f1.date_input("اختر فترة الطلب", [min_d, max_d], min_value=min_d, max_value=max_d)
-                        else: date_range = []
-                    else: date_range = []
+                            use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False, key="pur_chk")
+                            if use_date_pur:
+                                date_range = f1.date_input("اختر فترة الطلب", [min_d, max_d], min_value=min_d, max_value=max_d, key="pur_date")
+                                if len(date_range) == 2:
+                                    filtered_pur = filtered_pur[(filtered_pur[c_ord_date].dt.date >= date_range[0]) & (filtered_pur[c_ord_date].dt.date <= date_range[1])]
 
-                    sel_comp = f2.multiselect("🏢 الشركة الموردة", filtered_pur[c_comp].unique() if c_comp and c_comp in filtered_pur.columns else [])
-                    sel_emp = f3.multiselect("👤 الموظف المتابع", filtered_pur[c_emp].unique() if c_emp and c_emp in filtered_pur.columns else [])
-                    sel_unit = f4.multiselect("⚖️ الوحدة", filtered_pur[c_unit].unique() if c_unit and c_unit in filtered_pur.columns else [])
-                    
+                    if c_comp and c_comp in filtered_pur.columns:
+                        sel_comp = f2.multiselect("🏢 الشركة الموردة", filtered_pur[c_comp].unique(), key="pur_comp")
+                        if sel_comp: filtered_pur = filtered_pur[filtered_pur[c_comp].isin(sel_comp)]
+                    if c_emp and c_emp in filtered_pur.columns:
+                        sel_emp = f3.multiselect("👤 الموظف المتابع", filtered_pur[c_emp].unique(), key="pur_emp")
+                        if sel_emp: filtered_pur = filtered_pur[filtered_pur[c_emp].isin(sel_emp)]
+                    if c_unit and c_unit in filtered_pur.columns:
+                        sel_unit = f4.multiselect("⚖️ الوحدة", filtered_pur[c_unit].unique(), key="pur_unit")
+                        if sel_unit: filtered_pur = filtered_pur[filtered_pur[c_unit].isin(sel_unit)]
+                        
                     submitted_pur_cat = st.form_submit_button("🚀 تطبيق الفلاتر")
-
-            if use_date_pur and len(date_range) == 2 and c_ord_date:
-                filtered_pur = filtered_pur[(filtered_pur[c_ord_date].dt.date >= date_range[0]) & (filtered_pur[c_ord_date].dt.date <= date_range[1])]
-            if sel_comp: filtered_pur = filtered_pur[filtered_pur[c_comp].isin(sel_comp)]
-            if sel_emp: filtered_pur = filtered_pur[filtered_pur[c_emp].isin(sel_emp)]
-            if sel_unit: filtered_pur = filtered_pur[filtered_pur[c_unit].isin(sel_unit)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
@@ -762,9 +858,7 @@ try:
 
     # ------------------ قسم مشتريات المجزر ------------------
     elif st.session_state.active_tab == 'pur_slh':
-        data = load_pur_slh_data()
-        df_pur_slh = data['df']
-        c_arr, c_ord_date, c_comp, c_req, c_cur, c_unit, c_dept, c_cat, c_item = data['c_arr'], data['c_ord_date'], data['c_comp'], data['c_req'], data['c_cur'], data['c_unit'], data['c_dept'], data['c_cat'], data['c_item']
+        df_pur_slh, c_arr, c_ord_date, c_comp, c_req, c_cur, c_unit, c_dept, c_cat, c_item = load_pur_slh_data()
         
         if not df_pur_slh.empty:
             filtered_slh = df_pur_slh.copy()
@@ -772,27 +866,29 @@ try:
             with st.expander("🔍 فلاتر مشتريات المجزر", expanded=True):
                 with st.form("pur_slh_form"):
                     f1, f2, f3, f4 = st.columns(4)
-                    use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False)
                     if c_ord_date and c_ord_date in filtered_slh.columns:
-                        filtered_slh[c_ord_date] = pd.to_datetime(filtered_slh[c_ord_date], errors='coerce')
                         valid_dates = filtered_slh[c_ord_date].dropna()
                         if not valid_dates.empty:
                             min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            date_range = f1.date_input("اختر فترة الطلب", [min_d, max_d], min_value=min_d, max_value=max_d)
-                        else: date_range = []
-                    else: date_range = []
+                            use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False, key="pur_slh_chk")
+                            if use_date_pur:
+                                date_range = f1.date_input("اختر فترة الطلب", [min_d, max_d], min_value=min_d, max_value=max_d, key="pur_slh_date")
+                                if len(date_range) == 2:
+                                    filtered_slh = filtered_slh[(filtered_slh[c_ord_date].dt.date >= date_range[0]) & (filtered_slh[c_ord_date].dt.date <= date_range[1])]
 
-                    sel_comp = f2.multiselect("🏢 الشركة الموردة", filtered_slh[c_comp].unique() if c_comp and c_comp in filtered_slh.columns else [])
-                    sel_cat = f3.multiselect("🏷️ تصنيف المادة", filtered_slh[c_cat].unique() if c_cat and c_cat in filtered_slh.columns else [])
-                    sel_arr = f4.multiselect("⏳ حالة التوريد", filtered_slh[c_arr].unique() if c_arr and c_arr in filtered_slh.columns else [])
-                    
+                    if c_comp and c_comp in filtered_slh.columns:
+                        sel_comp = f2.multiselect("🏢 الشركة الموردة", filtered_slh[c_comp].unique(), key="pur_slh_comp")
+                        if sel_comp: filtered_slh = filtered_slh[filtered_slh[c_comp].isin(sel_comp)]
+
+                    if c_cat and c_cat in filtered_slh.columns:
+                        sel_cat = f3.multiselect("🏷️ تصنيف المادة", filtered_slh[c_cat].unique(), key="pur_slh_cat")
+                        if sel_cat: filtered_slh = filtered_slh[filtered_slh[c_cat].isin(sel_cat)]
+
+                    if c_arr and c_arr in filtered_slh.columns:
+                        sel_arr = f4.multiselect("⏳ حالة التوريد", filtered_slh[c_arr].unique(), key="pur_slh_arr")
+                        if sel_arr: filtered_slh = filtered_slh[filtered_slh[c_arr].isin(sel_arr)]
+                        
                     submitted_pur_slh = st.form_submit_button("🚀 تطبيق الفلاتر")
-
-            if use_date_pur and len(date_range) == 2 and c_ord_date:
-                filtered_slh = filtered_slh[(filtered_slh[c_ord_date].dt.date >= date_range[0]) & (filtered_slh[c_ord_date].dt.date <= date_range[1])]
-            if sel_comp: filtered_slh = filtered_slh[filtered_slh[c_comp].isin(sel_comp)]
-            if sel_cat: filtered_slh = filtered_slh[filtered_slh[c_cat].isin(sel_cat)]
-            if sel_arr: filtered_slh = filtered_slh[filtered_slh[c_arr].isin(sel_arr)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
