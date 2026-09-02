@@ -11,47 +11,52 @@ import traceback
 # 1. إعدادات الصفحة واللغة
 # ==========================================
 try:
-    st.set_page_config(page_title="FMCG Dashboard - PS Edition", layout="wide")
+    st.set_page_config(page_title="FMCG Dashboard", layout="wide")
 except Exception:
     pass
 
 st.markdown("""
     <style>
         /* =========================================
-           🎮 ثيم البلي ستيشن المتكامل (PlayStation UI/UX)
+           🎮 خلفية البلي ستيشن الهادئة (PS Background)
            ========================================= */
-        
-        /* الخلفية العامة والخطوط */
         .stApp { 
-            background-color: #0b0f19 !important; /* لون ليلي عميق جداً لإبراز النيون */
+            /* تدرج لوني عميق ومريح للعين يشبه قوائم الـ PS */
+            background: radial-gradient(circle at 50% 120%, #0f4c81 0%, #03142e 50%, #01060e 100%) !important;
+            background-attachment: fixed !important;
             color: #e2e8f0; 
             direction: rtl; 
         }
         
-        /* توسيط النصوص للأرقام */
         div[data-testid="stMetricValue"], div[data-testid="stMetricLabel"] { 
             text-align: right; 
         }
 
-        /* 1. التابات العلوية (الأزرار) */
+        /* =========================================
+           🚀 حركة الطفرة فقط للتابات (الأقسام)
+           ========================================= */
         div.row-widget.stRadio > div {
             display: flex; flex-direction: row; justify-content: center; gap: 15px;
             background-color: transparent; padding: 20px 10px;
         }
         div.stRadio > div[role="radiogroup"] > label {
-            background-color: #1e293b !important; border: 2px solid #334155 !important;
-            padding: 12px 25px !important; border-radius: 15px !important;
+            background-color: rgba(30, 41, 59, 0.8) !important; border: 1px solid #334155 !important;
+            padding: 12px 25px !important; border-radius: 12px !important;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
             cursor: pointer !important; box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
         }
         div.stRadio > div[role="radiogroup"] > label > div:first-child { display: none !important; }
+        
+        /* تأثير الطفرة للزر من تمرر الماوس */
         div.stRadio > div[role="radiogroup"] > label:hover {
             transform: scale(1.15) translateY(-5px) !important;
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
             border-color: #93c5fd !important;
-            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.6) !important; z-index: 10 !important;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.5) !important; z-index: 10 !important;
         }
         div.stRadio > div[role="radiogroup"] > label:hover p { color: #ffffff !important; font-weight: 900 !important; }
+        
+        /* القسم المفتوح حالياً */
         div.stRadio > div[role="radiogroup"] > label[data-checked="true"] {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
             transform: scale(1.05) !important; border-color: #34d399 !important;
@@ -59,94 +64,25 @@ st.markdown("""
         }
         div.stRadio > div[role="radiogroup"] > label[data-checked="true"] p { color: #ffffff !important; font-weight: bold !important; }
 
-        /* 2. الكروت الإحصائية (Metrics) - توهج أزرق */
-        div[data-testid="metric-container"] {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #334155;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        div[data-testid="metric-container"]:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
-            border-color: #60a5fa;
-        }
-
-        /* 3. الرسوم البيانية (Charts) - توهج بنفسجي */
-        .stPlotlyChart {
-            background: #1e293b;
-            border-radius: 16px;
-            padding: 10px;
-            border: 1px solid #334155;
-            transition: all 0.4s ease;
-        }
-        .stPlotlyChart:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
-            border-color: #a78bfa;
-            z-index: 5;
-        }
-
-        /* 4. الفلاتر والقوائم المنسدلة - توهج أخضر نيون */
-        div[data-baseweb="select"] > div, input {
-            transition: all 0.3s ease;
-            border-radius: 10px !important;
-            background-color: #1e293b !important;
-            border: 1px solid #475569 !important;
-        }
-        div[data-baseweb="select"] > div:hover, input:hover {
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5) !important;
-            border-color: #34d399 !important;
-            transform: scale(1.02);
-        }
-
-        /* 5. القوائم القابلة للطي (Expanders) - توهج ذهبي */
-        div[data-testid="stExpander"] {
-            background: #1e293b;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            transition: all 0.3s ease;
-        }
-        div[data-testid="stExpander"]:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
-            border-color: #fbbf24;
-        }
-
-        /* 6. النماذج (Forms) - توهج وردي/بنفسجي */
-        div[data-testid="stForm"] {
-            background: #0f172a;
-            border-radius: 16px;
-            border: 1px solid #334155;
-            transition: all 0.3s ease;
-        }
-        div[data-testid="stForm"]:hover {
-            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
-            border-color: #f472b6;
-        }
-
-        /* 7. زر تطبيق الفلاتر */
+        /* =========================================
+           🚀 حركة الطفرة لزر تطبيق الفلاتر
+           ========================================= */
         div[data-testid="stFormSubmitButton"] > button {
             height: 50px; font-size: 18px !important; font-weight: bold !important;
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-            color: #ffffff !important; border: none; border-radius: 12px !important;
+            color: #ffffff !important; border: none; border-radius: 8px !important;
             width: 100%; transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         div[data-testid="stFormSubmitButton"] > button:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.6);
-            border: 1px solid #a5b4fc;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.5);
         }
-        
-        /* 8. الجداول - تفاعل الصفوف */
-        tbody tr { transition: all 0.2s ease; }
-        tbody tr:hover { 
-            background-color: #334155 !important; 
-            transform: scale(1.01); 
-            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+
+        /* بقية العناصر (بدون حركات مزعجة) */
+        div[data-testid="metric-container"], .stPlotlyChart, div[data-testid="stExpander"], div[data-testid="stForm"] {
+            background-color: rgba(30, 41, 59, 0.6) !important;
+            border-radius: 12px;
+            border: 1px solid #334155;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -158,7 +94,7 @@ col_title, col_btn = st.columns([4, 1])
 with col_title:
     st.title("🎮 نظام إدارة المبيعات والمخازن | FMCG")
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    st.caption(f"🔵 حالة النظام: PS Interactive Mode | السرعة: فائقة | آخر تحديث: {current_time}")
+    st.caption(f"🔵 حالة النظام: PS Mode | السرعة: فائقة | آخر تحديث: {current_time}")
 with col_btn:
     st.write("") 
     if st.button("🔄 تحديث البيانات (Sync)", use_container_width=True):
@@ -168,7 +104,7 @@ with col_btn:
 st.markdown("---")
 
 # ==========================================
-# 3. شريط التابات (بتأثير البلي ستيشن الجديد)
+# 3. شريط التابات
 # ==========================================
 if 'active_tab' not in st.session_state:
     st.session_state.active_tab = 'gov'
@@ -193,7 +129,7 @@ st.session_state.active_tab = tabs_dict[selected_tab_name]
 st.markdown("---")
 
 # ==========================================
-# 4. دوال السحب المضادة للتعليق (Bulletproof)
+# 4. دوال السحب المضادة للتعليق
 # ==========================================
 def fetch_sheet_csv(url):
     headers = {'User-Agent': 'Mozilla/5.0'}
@@ -353,7 +289,7 @@ def load_pur_slh_data():
 
 
 # ==========================================
-# 5. منطق عرض الأقسام (Interactive PS UI)
+# 5. منطق عرض الأقسام (التصميم القديم النظيف)
 # ==========================================
 try:
     # ------------------ قسم المحافظات ------------------
@@ -364,7 +300,7 @@ try:
         
         if not df_gov.empty:
             filtered_df = df_gov.copy()
-            with st.expander("🔍 فلاتر قسم المحافظات (Interactive)", expanded=True):
+            with st.expander("🔍 فلاتر قسم المحافظات", expanded=True):
                 with st.form("gov_form"):
                     f1, f2, f3, f4 = st.columns(4)
                     use_date = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
@@ -401,22 +337,19 @@ try:
                 pie1, pie2, pie3 = st.columns(3)
                 with pie1:
                     if col_cat and col_ton and col_cat in filtered_df.columns and col_ton in filtered_df.columns:
-                        cat_data = filtered_df.groupby(col_cat)[col_ton].sum().reset_index()
-                        fig_cat = px.pie(cat_data, values=col_ton, names=col_cat, hole=0.4, title="🛒 التصنيف (Category)", color_discrete_sequence=px.colors.sequential.Agsunset)
+                        fig_cat = px.pie(filtered_df.groupby(col_cat)[col_ton].sum().reset_index(), values=col_ton, names=col_cat, hole=0.4, title="🛒 التصنيف (Category)")
                         fig_cat.update_traces(textposition='inside', textinfo='percent')
-                        fig_cat.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
+                        fig_cat.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_cat, use_container_width=True)
                 with pie2:
                     if col_ff and col_ton and col_ff in filtered_df.columns and col_ton in filtered_df.columns:
-                        ff_data = filtered_df.groupby(col_ff)[col_ton].sum().reset_index()
-                        fig_ff = px.pie(ff_data, values=col_ton, names=col_ff, color_discrete_sequence=['#3b82f6', '#10b981'], title="❄️ طازج ومجمد")
+                        fig_ff = px.pie(filtered_df.groupby(col_ff)[col_ton].sum().reset_index(), values=col_ton, names=col_ff, color_discrete_sequence=['#3b82f6', '#06b6d4'], title="❄️ طازج ومجمد")
                         fig_ff.update_traces(textposition='inside', textinfo='percent')
                         fig_ff.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_ff, use_container_width=True)
                 with pie3:
                     if col_label and col_ton and col_label in filtered_df.columns and col_ton in filtered_df.columns:
-                        label_data = filtered_df.groupby(col_label)[col_ton].sum().reset_index()
-                        fig_label = px.pie(label_data, values=col_ton, names=col_label, color_discrete_sequence=['#f59e0b', '#ec4899'], title="🏷️ العلامة التجارية")
+                        fig_label = px.pie(filtered_df.groupby(col_label)[col_ton].sum().reset_index(), values=col_ton, names=col_label, color_discrete_sequence=['#f59e0b', '#ec4899'], title="🏷️ العلامة التجارية")
                         fig_label.update_traces(textposition='inside', textinfo='percent')
                         fig_label.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_label, use_container_width=True)
@@ -425,22 +358,19 @@ try:
             st.markdown("---")
             try:
                 if col_gov and col_ton and col_gov in filtered_df.columns and col_ton in filtered_df.columns:
-                    gov_data = filtered_df.groupby(col_gov)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=True)
-                    fig_gov = px.bar(gov_data, x=col_ton, y=col_gov, orientation='h', color=col_gov, text_auto='.2s', title="📍 التوزيع حسب المحافظات")
+                    fig_gov = px.bar(filtered_df.groupby(col_gov)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=True), x=col_ton, y=col_gov, orientation='h', color=col_gov, text_auto='.2s', title="📍 التوزيع حسب المحافظات")
                     fig_gov.update_layout(showlegend=False, height=450, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_gov, use_container_width=True)
 
                 bar1, bar2 = st.columns(2)
                 with bar1:
                     if col_agent and col_ton and col_agent in filtered_df.columns and col_ton in filtered_df.columns:
-                        agent_data = filtered_df.groupby(col_agent)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=False).head(10)
-                        fig_agent = px.bar(agent_data, x=col_agent, y=col_ton, color=col_ton, color_continuous_scale='Purples', text_auto='.2s', title="🏆 أفضل 10 زبائن (طن)")
+                        fig_agent = px.bar(filtered_df.groupby(col_agent)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=False).head(10), x=col_agent, y=col_ton, color=col_ton, color_continuous_scale='Purples', text_auto='.2s', title="🏆 أفضل 10 زبائن (طن)")
                         fig_agent.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_agent, use_container_width=True)
                 with bar2:
                     if col_item and col_qty and col_item in filtered_df.columns and col_qty in filtered_df.columns:
-                        item_data = filtered_df.groupby(col_item)[col_qty].sum().reset_index().sort_values(by=col_qty, ascending=False).head(10)
-                        fig_item = px.bar(item_data, x=col_item, y=col_qty, color=col_qty, color_continuous_scale='Reds', text_auto='.2s', title="📦 أفضل 10 مواد مبيعاً (عدد)")
+                        fig_item = px.bar(filtered_df.groupby(col_item)[col_qty].sum().reset_index().sort_values(by=col_qty, ascending=False).head(10), x=col_item, y=col_qty, color=col_qty, color_continuous_scale='Reds', text_auto='.2s', title="📦 أفضل 10 مواد مبيعاً (عدد)")
                         fig_item.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_item, use_container_width=True)
             except Exception: pass
@@ -551,7 +481,7 @@ try:
         
         if not df_slh.empty:
             filtered_slh = df_slh.copy()
-            with st.expander("🔍 فلاتر مخازن المجزر (Interactive)", expanded=True):
+            with st.expander("🔍 فلاتر مخازن المجزر", expanded=True):
                 with st.form("slh_form"):
                     f1, f2 = st.columns(2)
                     use_date_slh = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
@@ -650,7 +580,7 @@ try:
         
         if not df_mat.empty:
             filtered_mat = df_mat.copy()
-            with st.expander("📦 فلاتر المواد الأولية (Interactive)", expanded=True):
+            with st.expander("📦 فلاتر المواد الأولية", expanded=True):
                 with st.form("mat_form"):
                     f1, f2, f3, f4 = st.columns(4)
                     use_date_mat = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
@@ -743,7 +673,7 @@ try:
         
         if not df_pur.empty:
             filtered_pur = df_pur.copy()
-            with st.expander("🔍 فلاتر مشتريات المصنفات (Interactive)", expanded=True):
+            with st.expander("🔍 فلاتر مشتريات المصنفات", expanded=True):
                 with st.form("pur_cat_form"):
                     f1, f2, f3, f4 = st.columns(4)
                     use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False)
@@ -839,7 +769,7 @@ try:
         if not df_pur_slh.empty:
             filtered_slh = df_pur_slh.copy()
 
-            with st.expander("🔍 فلاتر مشتريات المجزر (Interactive)", expanded=True):
+            with st.expander("🔍 فلاتر مشتريات المجزر", expanded=True):
                 with st.form("pur_slh_form"):
                     f1, f2, f3, f4 = st.columns(4)
                     use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False)
@@ -938,4 +868,4 @@ try:
             st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
 except Exception as e:
-    st.error("⚠️ النظام يقوم بالتحميل... يرجى الانتظار.")
+    pass
