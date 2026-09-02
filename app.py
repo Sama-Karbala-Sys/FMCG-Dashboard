@@ -11,88 +11,142 @@ import traceback
 # 1. إعدادات الصفحة واللغة
 # ==========================================
 try:
-    st.set_page_config(page_title="FMCG Dashboard", layout="wide")
+    st.set_page_config(page_title="FMCG Dashboard - PS Edition", layout="wide")
 except Exception:
     pass
 
 st.markdown("""
     <style>
-        .stApp { direction: rtl; }
-        div[data-testid="stMetricValue"], div[data-testid="stMetricLabel"] { text-align: right; }
-        
         /* =========================================
-           🎮 تأثير البلي ستيشن (PlayStation Hover Effect)
+           🎮 ثيم البلي ستيشن المتكامل (PlayStation UI/UX)
            ========================================= */
         
-        /* تنسيق حاوية الأزرار لتكون بالمنتصف */
-        div.stRadio > div[role="radiogroup"] {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 15px;
-            background-color: transparent;
-            padding: 20px 10px;
+        /* الخلفية العامة والخطوط */
+        .stApp { 
+            background-color: #0b0f19 !important; /* لون ليلي عميق جداً لإبراز النيون */
+            color: #e2e8f0; 
+            direction: rtl; 
         }
         
-        /* تنسيق كل زر (في حالته الطبيعية غير المؤشرة) */
+        /* توسيط النصوص للأرقام */
+        div[data-testid="stMetricValue"], div[data-testid="stMetricLabel"] { 
+            text-align: right; 
+        }
+
+        /* 1. التابات العلوية (الأزرار) */
+        div.row-widget.stRadio > div {
+            display: flex; flex-direction: row; justify-content: center; gap: 15px;
+            background-color: transparent; padding: 20px 10px;
+        }
         div.stRadio > div[role="radiogroup"] > label {
-            background-color: #1e293b !important;
-            border: 2px solid #334155 !important;
-            padding: 12px 25px !important;
-            border-radius: 15px !important;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* تأثير ارتداد ناعم ورهيب */
-            cursor: pointer !important;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+            background-color: #1e293b !important; border: 2px solid #334155 !important;
+            padding: 12px 25px !important; border-radius: 15px !important;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            cursor: pointer !important; box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
         }
-        
-        /* إخفاء الدائرة الكلاسيكية مالت الراديو */
-        div.stRadio > div[role="radiogroup"] > label > div:first-child {
-            display: none !important;
-        }
-        
-        /* 🚀 تأثير التأشير بالماوس (Hover) - التكبير والتوهج */
+        div.stRadio > div[role="radiogroup"] > label > div:first-child { display: none !important; }
         div.stRadio > div[role="radiogroup"] > label:hover {
-            transform: scale(1.15) translateY(-5px) !important; /* يكبر ويصعد ليگدام */
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important; /* توهج أزرق PS */
+            transform: scale(1.15) translateY(-5px) !important;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
             border-color: #93c5fd !important;
-            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.6) !important; /* ضوء مشع خلف الزر */
-            z-index: 10 !important;
+            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.6) !important; z-index: 10 !important;
         }
-        
-        /* تلوين وتثخين النص عند التأشير */
-        div.stRadio > div[role="radiogroup"] > label:hover p {
-            color: #ffffff !important;
-            font-weight: 900 !important;
-        }
-        
-        /* ✅ الخيار المحدّد حالياً (القسم المفتوح) */
+        div.stRadio > div[role="radiogroup"] > label:hover p { color: #ffffff !important; font-weight: 900 !important; }
         div.stRadio > div[role="radiogroup"] > label[data-checked="true"] {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; /* لون أخضر للقسم الفعال */
-            transform: scale(1.05) !important;
-            border-color: #34d399 !important;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            transform: scale(1.05) !important; border-color: #34d399 !important;
             box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4) !important;
         }
-        div.stRadio > div[role="radiogroup"] > label[data-checked="true"] p {
-            color: #ffffff !important;
-            font-weight: bold !important;
-        }
-        /* ========================================= */
+        div.stRadio > div[role="radiogroup"] > label[data-checked="true"] p { color: #ffffff !important; font-weight: bold !important; }
 
-        /* تجميل زر تطبيق الفلاتر */
+        /* 2. الكروت الإحصائية (Metrics) - توهج أزرق */
+        div[data-testid="metric-container"] {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        div[data-testid="metric-container"]:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
+            border-color: #60a5fa;
+        }
+
+        /* 3. الرسوم البيانية (Charts) - توهج بنفسجي */
+        .stPlotlyChart {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 10px;
+            border: 1px solid #334155;
+            transition: all 0.4s ease;
+        }
+        .stPlotlyChart:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+            border-color: #a78bfa;
+            z-index: 5;
+        }
+
+        /* 4. الفلاتر والقوائم المنسدلة - توهج أخضر نيون */
+        div[data-baseweb="select"] > div, input {
+            transition: all 0.3s ease;
+            border-radius: 10px !important;
+            background-color: #1e293b !important;
+            border: 1px solid #475569 !important;
+        }
+        div[data-baseweb="select"] > div:hover, input:hover {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5) !important;
+            border-color: #34d399 !important;
+            transform: scale(1.02);
+        }
+
+        /* 5. القوائم القابلة للطي (Expanders) - توهج ذهبي */
+        div[data-testid="stExpander"] {
+            background: #1e293b;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        div[data-testid="stExpander"]:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+            border-color: #fbbf24;
+        }
+
+        /* 6. النماذج (Forms) - توهج وردي/بنفسجي */
+        div[data-testid="stForm"] {
+            background: #0f172a;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        div[data-testid="stForm"]:hover {
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+            border-color: #f472b6;
+        }
+
+        /* 7. زر تطبيق الفلاتر */
         div[data-testid="stFormSubmitButton"] > button {
-            height: 50px;
-            font-size: 18px !important;
-            font-weight: bold !important;
+            height: 50px; font-size: 18px !important; font-weight: bold !important;
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-            color: #ffffff !important;
-            border: none;
-            border-radius: 8px !important;
-            width: 100%;
-            transition: all 0.3s ease-in-out;
+            color: #ffffff !important; border: none; border-radius: 12px !important;
+            width: 100%; transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         div[data-testid="stFormSubmitButton"] > button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.6);
+            border: 1px solid #a5b4fc;
+        }
+        
+        /* 8. الجداول - تفاعل الصفوف */
+        tbody tr { transition: all 0.2s ease; }
+        tbody tr:hover { 
+            background-color: #334155 !important; 
+            transform: scale(1.01); 
+            box-shadow: 0 0 10px rgba(255,255,255,0.1);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -102,9 +156,9 @@ st.markdown("""
 # ==========================================
 col_title, col_btn = st.columns([4, 1])
 with col_title:
-    st.title("📊 نظام إدارة المبيعات والمخازن | FMCG")
+    st.title("🎮 نظام إدارة المبيعات والمخازن | FMCG")
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    st.caption(f"🟢 حالة النظام: متصل بالسحابة | السرعة: فائقة (نظام ذكي) | آخر تحديث: {current_time}")
+    st.caption(f"🔵 حالة النظام: PS Interactive Mode | السرعة: فائقة | آخر تحديث: {current_time}")
 with col_btn:
     st.write("") 
     if st.button("🔄 تحديث البيانات (Sync)", use_container_width=True):
@@ -299,7 +353,7 @@ def load_pur_slh_data():
 
 
 # ==========================================
-# 5. منطق عرض الأقسام (التصميم القديم المحبوب)
+# 5. منطق عرض الأقسام (Interactive PS UI)
 # ==========================================
 try:
     # ------------------ قسم المحافظات ------------------
@@ -310,7 +364,7 @@ try:
         
         if not df_gov.empty:
             filtered_df = df_gov.copy()
-            with st.expander("🔍 فلاتر قسم المحافظات (بدون تعليق)", expanded=True):
+            with st.expander("🔍 فلاتر قسم المحافظات (Interactive)", expanded=True):
                 with st.form("gov_form"):
                     f1, f2, f3, f4 = st.columns(4)
                     use_date = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
@@ -348,23 +402,23 @@ try:
                 with pie1:
                     if col_cat and col_ton and col_cat in filtered_df.columns and col_ton in filtered_df.columns:
                         cat_data = filtered_df.groupby(col_cat)[col_ton].sum().reset_index()
-                        fig_cat = px.pie(cat_data, values=col_ton, names=col_cat, hole=0.4, title="🛒 التصنيف (Category)")
+                        fig_cat = px.pie(cat_data, values=col_ton, names=col_cat, hole=0.4, title="🛒 التصنيف (Category)", color_discrete_sequence=px.colors.sequential.Agsunset)
                         fig_cat.update_traces(textposition='inside', textinfo='percent')
-                        fig_cat.update_layout(legend=dict(orientation="h", y=-0.2), uniformtext_minsize=10, uniformtext_mode='hide')
+                        fig_cat.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_cat, use_container_width=True)
                 with pie2:
                     if col_ff and col_ton and col_ff in filtered_df.columns and col_ton in filtered_df.columns:
                         ff_data = filtered_df.groupby(col_ff)[col_ton].sum().reset_index()
-                        fig_ff = px.pie(ff_data, values=col_ton, names=col_ff, color_discrete_sequence=['#3b82f6', '#06b6d4'], title="❄️ طازج ومجمد")
+                        fig_ff = px.pie(ff_data, values=col_ton, names=col_ff, color_discrete_sequence=['#3b82f6', '#10b981'], title="❄️ طازج ومجمد")
                         fig_ff.update_traces(textposition='inside', textinfo='percent')
-                        fig_ff.update_layout(legend=dict(orientation="h", y=-0.2), uniformtext_minsize=10, uniformtext_mode='hide')
+                        fig_ff.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_ff, use_container_width=True)
                 with pie3:
                     if col_label and col_ton and col_label in filtered_df.columns and col_ton in filtered_df.columns:
                         label_data = filtered_df.groupby(col_label)[col_ton].sum().reset_index()
                         fig_label = px.pie(label_data, values=col_ton, names=col_label, color_discrete_sequence=['#f59e0b', '#ec4899'], title="🏷️ العلامة التجارية")
                         fig_label.update_traces(textposition='inside', textinfo='percent')
-                        fig_label.update_layout(legend=dict(orientation="h", y=-0.2), uniformtext_minsize=10, uniformtext_mode='hide')
+                        fig_label.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_label, use_container_width=True)
             except Exception: pass
 
@@ -373,7 +427,7 @@ try:
                 if col_gov and col_ton and col_gov in filtered_df.columns and col_ton in filtered_df.columns:
                     gov_data = filtered_df.groupby(col_gov)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=True)
                     fig_gov = px.bar(gov_data, x=col_ton, y=col_gov, orientation='h', color=col_gov, text_auto='.2s', title="📍 التوزيع حسب المحافظات")
-                    fig_gov.update_layout(showlegend=False, height=450)
+                    fig_gov.update_layout(showlegend=False, height=450, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_gov, use_container_width=True)
 
                 bar1, bar2 = st.columns(2)
@@ -381,11 +435,13 @@ try:
                     if col_agent and col_ton and col_agent in filtered_df.columns and col_ton in filtered_df.columns:
                         agent_data = filtered_df.groupby(col_agent)[col_ton].sum().reset_index().sort_values(by=col_ton, ascending=False).head(10)
                         fig_agent = px.bar(agent_data, x=col_agent, y=col_ton, color=col_ton, color_continuous_scale='Purples', text_auto='.2s', title="🏆 أفضل 10 زبائن (طن)")
+                        fig_agent.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_agent, use_container_width=True)
                 with bar2:
                     if col_item and col_qty and col_item in filtered_df.columns and col_qty in filtered_df.columns:
                         item_data = filtered_df.groupby(col_item)[col_qty].sum().reset_index().sort_values(by=col_qty, ascending=False).head(10)
                         fig_item = px.bar(item_data, x=col_item, y=col_qty, color=col_qty, color_continuous_scale='Reds', text_auto='.2s', title="📦 أفضل 10 مواد مبيعاً (عدد)")
+                        fig_item.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_item, use_container_width=True)
             except Exception: pass
             
@@ -403,7 +459,7 @@ try:
                 try:
                     custom_df = filtered_df.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
                     fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="")
+                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_custom, use_container_width=True)
                 except Exception: pass
 
@@ -437,6 +493,7 @@ try:
                     if c_frz and c_final and c_frz in filtered_frz.columns and c_final in filtered_frz.columns:
                         frz_stock = filtered_frz.groupby(c_frz)[c_final].sum().reset_index().sort_values(by=c_final, ascending=False)
                         fig_stock = px.bar(frz_stock, x=c_frz, y=c_final, color=c_frz, text_auto='.2s', title="🧊 المخزون الحالي في كل ثلاجة")
+                        fig_stock.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_stock, use_container_width=True)
                 with row1_col2:
                     if c_frz and c_short and c_frz in filtered_frz.columns and c_short in filtered_frz.columns:
@@ -444,7 +501,7 @@ try:
                         if frz_short[c_short].sum() > 0:
                             fig_short = px.pie(frz_short, values=c_short, names=c_frz, hole=0.4, color_discrete_sequence=px.colors.sequential.Reds_r, title="⚠️ توزيع النقص حسب الثلاجة")
                             fig_short.update_traces(textposition='inside', textinfo='percent')
-                            fig_short.update_layout(uniformtext_minsize=10, uniformtext_mode='hide')
+                            fig_short.update_layout(paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                             st.plotly_chart(fig_short, use_container_width=True)
                         else:
                             st.success("✅ لا يوجد أي نقص في الثلاجات!")
@@ -456,6 +513,7 @@ try:
                     flow_data = filtered_frz.groupby(c_frz)[[c_prod, c_sold]].sum().reset_index()
                     flow_melted = flow_data.melt(id_vars=c_frz, value_vars=[c_prod, c_sold], var_name='العملية', value_name='الكمية')
                     fig_flow = px.bar(flow_melted, x=c_frz, y='الكمية', color='العملية', barmode='group', color_discrete_map={c_prod: '#10b981', c_sold: '#f43f5e'}, text_auto='.2s', title="🔄 مقارنة الإنتاج مقابل المباع")
+                    fig_flow.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_flow, use_container_width=True)
             except Exception: pass
 
@@ -473,7 +531,7 @@ try:
                 try:
                     custom_df = filtered_frz.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
                     fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="")
+                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_custom, use_container_width=True)
                 except Exception: pass
 
@@ -487,13 +545,13 @@ try:
 
     # ------------------ قسم المجزر ------------------
     elif st.session_state.active_tab == 'slh':
-        data = load_slh_data()
+        data = load_slaughterhouse_data()
         df_slh = data['df']
         c_date, c_qty, c_prev, c_prod, c_sold, c_item, c_code = data['c_date'], data['c_qty'], data['c_prev'], data['c_prod'], data['c_sold'], data['c_item'], data['c_code']
         
         if not df_slh.empty:
             filtered_slh = df_slh.copy()
-            with st.expander("🔍 فلاتر مخازن المجزر (بدون تعليق)", expanded=True):
+            with st.expander("🔍 فلاتر مخازن المجزر (Interactive)", expanded=True):
                 with st.form("slh_form"):
                     f1, f2 = st.columns(2)
                     use_date_slh = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
@@ -530,14 +588,14 @@ try:
                         pie_df = pd.DataFrame({'العملية': ['الإنتاج', 'المباع'], 'الكمية': [total_prod, total_sold]})
                         fig_pie1 = px.pie(pie_df, values='الكمية', names='العملية', hole=0.4, title="🔄 نسبة الإنتاج مقابل المبيعات", color_discrete_sequence=['#10b981', '#f43f5e'])
                         fig_pie1.update_traces(textposition='inside', textinfo='percent+label')
-                        fig_pie1.update_layout(showlegend=False)
+                        fig_pie1.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_pie1, use_container_width=True)
                 with pie2:
                     if c_item and c_qty and c_item in filtered_slh.columns and c_qty in filtered_slh.columns:
                         top5 = filtered_slh.groupby(c_item)[c_qty].sum().nlargest(5).reset_index()
                         fig_pie2 = px.pie(top5, values=c_qty, names=c_item, hole=0.4, title="📦 أعلى 5 مواد متوفرة", color_discrete_sequence=px.colors.sequential.Blues_r)
                         fig_pie2.update_traces(textposition='inside', textinfo='percent')
-                        fig_pie2.update_layout(legend=dict(orientation="h", y=-0.2), uniformtext_minsize=10, uniformtext_mode='hide')
+                        fig_pie2.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_pie2, use_container_width=True)
             except Exception: pass
                 
@@ -548,13 +606,13 @@ try:
                     if c_item and c_prod and c_item in filtered_slh.columns and c_prod in filtered_slh.columns:
                         prod_data = filtered_slh.groupby(c_item)[c_prod].sum().reset_index().sort_values(by=c_prod, ascending=True).tail(10)
                         fig_prod = px.bar(prod_data, x=c_prod, y=c_item, orientation='h', color=c_prod, color_continuous_scale='Greens', text_auto='.2s', title="🏆 أعلى 10 مواد حسب الإنتاج")
-                        fig_prod.update_layout(showlegend=False)
+                        fig_prod.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_prod, use_container_width=True)
                 with row1_c2:
                     if c_item and c_qty and c_item in filtered_slh.columns and c_qty in filtered_slh.columns:
                         qty_data = filtered_slh.groupby(c_item)[c_qty].sum().reset_index().sort_values(by=c_qty, ascending=True).tail(10)
                         fig_qty = px.bar(qty_data, x=c_qty, y=c_item, orientation='h', color=c_qty, color_continuous_scale='Blues', text_auto='.2s', title="📦 أعلى 10 مواد حسب الكمية")
-                        fig_qty.update_layout(showlegend=False)
+                        fig_qty.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_qty, use_container_width=True)
             except Exception: pass
             
@@ -572,7 +630,7 @@ try:
                 try:
                     custom_df = filtered_slh.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
                     fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="")
+                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_custom, use_container_width=True)
                 except Exception: pass
 
@@ -592,7 +650,7 @@ try:
         
         if not df_mat.empty:
             filtered_mat = df_mat.copy()
-            with st.expander("📦 فلاتر المواد الأولية (بدون تعليق)", expanded=True):
+            with st.expander("📦 فلاتر المواد الأولية (Interactive)", expanded=True):
                 with st.form("mat_form"):
                     f1, f2, f3, f4 = st.columns(4)
                     use_date_mat = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False)
@@ -631,14 +689,14 @@ try:
                     if c_dept and c_bal and c_dept in filtered_mat.columns and c_bal in filtered_mat.columns:
                         dept_data = filtered_mat.groupby(c_dept)[c_bal].sum().reset_index().sort_values(by=c_bal, ascending=True)
                         fig_dept = px.bar(dept_data, x=c_bal, y=c_dept, orientation='h', color=c_dept, text_auto='.2s', title="🏢 الأرصدة الحالية حسب القسم")
-                        fig_dept.update_layout(showlegend=False)
+                        fig_dept.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_dept, use_container_width=True)
                 with row1_c2:
                     if c_cat and c_bal and c_cat in filtered_mat.columns and c_bal in filtered_mat.columns:
                         cat_data = filtered_mat.groupby(c_cat)[c_bal].sum().reset_index()
                         fig_cat_mat = px.pie(cat_data, values=c_bal, names=c_cat, hole=0.4, title="🏷️ توزيع الأرصدة حسب التصنيف")
                         fig_cat_mat.update_traces(textposition='inside', textinfo='percent')
-                        fig_cat_mat.update_layout(legend=dict(orientation="h", y=-0.2), uniformtext_minsize=10, uniformtext_mode='hide')
+                        fig_cat_mat.update_layout(legend=dict(orientation="h", y=-0.2), paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_cat_mat, use_container_width=True)
             except Exception: pass
                 
@@ -647,7 +705,7 @@ try:
                 if c_item and c_bal and c_item in filtered_mat.columns and c_bal in filtered_mat.columns:
                     item_data = filtered_mat.groupby(c_item)[c_bal].sum().reset_index().sort_values(by=c_bal, ascending=True).tail(10)
                     fig_top_mat = px.bar(item_data, x=c_bal, y=c_item, orientation='h', color=c_bal, color_continuous_scale='Blues', text_auto='.2s', title="🏆 أعلى 10 مواد متوفرة بالمخزن")
-                    fig_top_mat.update_layout(showlegend=False)
+                    fig_top_mat.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_top_mat, use_container_width=True)
             except Exception: pass
 
@@ -665,7 +723,7 @@ try:
                 try:
                     custom_df = filtered_mat.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
                     fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="")
+                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_custom, use_container_width=True)
                 except Exception: pass
 
@@ -685,7 +743,7 @@ try:
         
         if not df_pur.empty:
             filtered_pur = df_pur.copy()
-            with st.expander("🔍 فلاتر مشتريات المصنفات (بدون تعليق)", expanded=True):
+            with st.expander("🔍 فلاتر مشتريات المصنفات (Interactive)", expanded=True):
                 with st.form("pur_cat_form"):
                     f1, f2, f3, f4 = st.columns(4)
                     use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False)
@@ -725,13 +783,13 @@ try:
                         comp_data = filtered_pur.groupby(c_comp)[c_req].sum().reset_index()
                         fig_comp = px.pie(comp_data, values=c_req, names=c_comp, hole=0.5, title="🏢 توزيع الطلبات حسب الشركة", color_discrete_sequence=px.colors.qualitative.Prism)
                         fig_comp.update_traces(textposition='inside', textinfo='percent+label')
-                        fig_comp.update_layout(showlegend=False)
+                        fig_comp.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_comp, use_container_width=True)
                 with row1_c2:
                     if c_emp and c_req and c_emp in filtered_pur.columns and c_req in filtered_pur.columns:
                         emp_data = filtered_pur.groupby(c_emp)[c_req].sum().reset_index().sort_values(by=c_req, ascending=True)
                         fig_emp = px.bar(emp_data, x=c_req, y=c_emp, orientation='h', title="👤 حجم متابعة الطلبات لكل موظف", text_auto='.2s', color=c_req, color_continuous_scale='Teal')
-                        fig_emp.update_layout(showlegend=False)
+                        fig_emp.update_layout(showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_emp, use_container_width=True)
             except Exception: pass
                 
@@ -742,7 +800,7 @@ try:
                     top_items = filtered_pur.groupby(c_item)[[c_req, c_cur]].sum().nlargest(10, c_req).reset_index()
                     melted_items = top_items.melt(id_vars=c_item, value_vars=[c_req, c_cur], var_name='النوع', value_name='الكمية')
                     fig_compare = px.bar(melted_items, x=c_item, y='الكمية', color='النوع', barmode='group', title="⚖️ مقارنة: المطلوب مقابل الرصيد لأعلى 10 مواد", color_discrete_map={c_req: '#f59e0b', c_cur: '#3b82f6'}, text_auto='.2s')
-                    fig_compare.update_layout(legend_title_text='', xaxis_title="")
+                    fig_compare.update_layout(legend_title_text='', xaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_compare, use_container_width=True)
             except Exception: pass
 
@@ -760,7 +818,7 @@ try:
                 try:
                     custom_df = filtered_pur.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
                     fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="")
+                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_custom, use_container_width=True)
                 except Exception: pass
 
@@ -781,7 +839,7 @@ try:
         if not df_pur_slh.empty:
             filtered_slh = df_pur_slh.copy()
 
-            with st.expander("🔍 فلاتر مشتريات المجزر (بدون تعليق)", expanded=True):
+            with st.expander("🔍 فلاتر مشتريات المجزر (Interactive)", expanded=True):
                 with st.form("pur_slh_form"):
                     f1, f2, f3, f4 = st.columns(4)
                     use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False)
@@ -825,15 +883,8 @@ try:
                                               title="🗺️ الخريطة الهيكلية للطلبات",
                                               color=c_req, color_continuous_scale='Blues')
                         
-                        fig_tree.update_traces(
-                            root_color="#1e293b", 
-                            textinfo="label+value", 
-                            textfont=dict(size=15)
-                        )
-                        fig_tree.update_layout(
-                            margin=dict(t=50, l=10, r=10, b=10),
-                            height=650 
-                        )
+                        fig_tree.update_traces(root_color="#1e293b", textinfo="label+value", textfont=dict(size=15))
+                        fig_tree.update_layout(margin=dict(t=50, l=10, r=10, b=10), height=650, paper_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_tree, use_container_width=True)
             except Exception: pass
                     
@@ -848,7 +899,7 @@ try:
                         fig_comp_slh = px.bar(melted_slh, x='الكمية', y=c_item, color='النوع', orientation='h', barmode='group',
                                              title="⚖️ أعلى 10 مواد: (المطلوب) مقابل (الرصيد)",
                                              color_discrete_map={c_req: '#8b5cf6', c_cur: '#10b981'}, text_auto='.2s')
-                        fig_comp_slh.update_layout(legend_title_text='', yaxis_title="")
+                        fig_comp_slh.update_layout(legend_title_text='', yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_comp_slh, use_container_width=True)
 
                 with row2_c2:
@@ -856,7 +907,7 @@ try:
                         comp_perf = filtered_slh.groupby(c_comp)[c_req].sum().reset_index().sort_values(by=c_req, ascending=False).head(10)
                         fig_comp_bar = px.bar(comp_perf, x=c_comp, y=c_req, title="🏢 أعلى 10 شركات موردة",
                                               color=c_req, color_continuous_scale='Sunset', text_auto='.2s')
-                        fig_comp_bar.update_layout(xaxis_title="")
+                        fig_comp_bar.update_layout(xaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                         st.plotly_chart(fig_comp_bar, use_container_width=True)
             except Exception: pass
 
@@ -874,7 +925,7 @@ try:
                 try:
                     custom_df = filtered_slh.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
                     fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="")
+                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
                     st.plotly_chart(fig_custom, use_container_width=True)
                 except Exception: pass
 
@@ -887,4 +938,4 @@ try:
             st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
 except Exception as e:
-    st.error("⚠️ يرجى تحديث الصفحة. إذا استمرت المشكلة اضغط على 'تحديث البيانات' في الأعلى.")
+    st.error("⚠️ النظام يقوم بالتحميل... يرجى الانتظار.")
