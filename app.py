@@ -11,14 +11,14 @@ import traceback
 # 1. إعدادات الصفحة واللغة
 # ==========================================
 try:
-    st.set_page_config(page_title="FMCG Dashboard", layout="wide")
+    st.set_page_config(page_title="FMCG Dashboard - PS Edition", layout="wide")
 except Exception:
     pass
 
 st.markdown("""
     <style>
         /* =========================================
-           خلفية النظام الهادئة والعميقة
+           🎮 خلفية البلي ستيشن الهادئة والعميقة (PS Vibe)
            ========================================= */
         .stApp { 
             background: radial-gradient(circle at 50% 120%, #0f4c81 0%, #03142e 50%, #01060e 100%) !important;
@@ -32,7 +32,7 @@ st.markdown("""
         }
 
         /* =========================================
-           🚀 1. التابات (الأقسام العلوية)
+           🚀 1. التابات (الأقسام العلوية) - تأثير PS Hover
            ========================================= */
         div.row-widget.stRadio > div {
             display: flex; flex-direction: row; justify-content: center; gap: 15px;
@@ -66,18 +66,14 @@ st.markdown("""
            ========================================= */
         div[data-testid="metric-container"] {
             background-color: rgba(30, 41, 59, 0.6) !important;
-            border: 1px solid #334155;
-            padding: 20px;
-            border-radius: 16px;
+            border: 1px solid #334155; padding: 20px; border-radius: 16px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         div[data-testid="metric-container"]:hover {
             transform: translateY(-8px) scale(1.05);
             background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.9)) !important;
-            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4);
-            border-color: #38bdf8;
-            z-index: 5;
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4); border-color: #38bdf8; z-index: 5;
         }
 
         /* =========================================
@@ -85,59 +81,43 @@ st.markdown("""
            ========================================= */
         .stPlotlyChart {
             background-color: rgba(30, 41, 59, 0.4) !important;
-            border-radius: 16px;
-            padding: 15px;
-            border: 1px solid #334155;
+            border-radius: 16px; padding: 15px; border: 1px solid #334155;
             transition: all 0.4s ease;
         }
         .stPlotlyChart:hover {
             transform: scale(1.03) translateY(-5px);
             background-color: rgba(30, 41, 59, 0.8) !important;
-            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3);
-            border-color: #a78bfa;
-            z-index: 5;
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); border-color: #a78bfa; z-index: 5;
         }
 
         /* =========================================
            🚀 4. الفلاتر والقوائم المنسدلة (Selectboxes)
            ========================================= */
         div[data-baseweb="select"] > div, input {
-            transition: all 0.3s ease;
-            border-radius: 10px !important;
-            background-color: rgba(30, 41, 59, 0.7) !important;
-            border: 1px solid #475569 !important;
+            transition: all 0.3s ease; border-radius: 10px !important;
+            background-color: rgba(30, 41, 59, 0.7) !important; border: 1px solid #475569 !important;
         }
         div[data-baseweb="select"] > div:hover, input:hover {
-            transform: scale(1.03);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4) !important;
-            border-color: #34d399 !important;
+            transform: scale(1.03); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4) !important; border-color: #34d399 !important;
         }
 
         /* =========================================
-           🚀 5. القوائم المطوية (Expanders)
+           🚀 5. زر التطبيق والجداول المطوية
            ========================================= */
         div[data-testid="stExpander"] {
-            background-color: rgba(30, 41, 59, 0.5) !important;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            transition: all 0.3s ease;
+            background-color: rgba(30, 41, 59, 0.5) !important; border-radius: 12px; border: 1px solid #334155; transition: all 0.3s ease;
         }
         div[data-testid="stExpander"]:hover {
-            transform: translateY(-3px) scale(1.01);
-            background-color: rgba(30, 41, 59, 0.8) !important;
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
-            border-color: #fbbf24;
+            transform: translateY(-3px) scale(1.01); background-color: rgba(30, 41, 59, 0.8) !important;
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2); border-color: #fbbf24;
         }
-
-        /* =========================================
-           🚀 6. الجداول (Dataframes)
-           ========================================= */
-        div[data-testid="stDataFrame"] {
-            transition: all 0.3s ease;
+        div[data-testid="stFormSubmitButton"] > button {
+            height: 50px; font-size: 18px !important; font-weight: bold !important;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important; color: #ffffff !important;
+            border: none; border-radius: 8px !important; width: 100%; transition: all 0.3s ease-in-out;
         }
-        div[data-testid="stDataFrame"]:hover {
-            transform: scale(1.01);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+        div[data-testid="stFormSubmitButton"] > button:hover {
+            transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 15px rgba(99, 102, 241, 0.5);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -147,9 +127,9 @@ st.markdown("""
 # ==========================================
 col_title, col_btn = st.columns([4, 1])
 with col_title:
-    st.title("📊 نظام إدارة المبيعات والمخازن | FMCG")
+    st.title("🎮 نظام إدارة المبيعات والمخازن | FMCG")
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    st.caption(f"🟢 حالة النظام: متصل بالسحابة | السرعة: فائقة | آخر تحديث: {current_time}")
+    st.caption(f"🔵 حالة النظام: PS Interactive Mode | النسخة الكلاسيكية | آخر تحديث: {current_time}")
 with col_btn:
     st.write("") 
     if st.button("🔄 تحديث البيانات (Sync)", use_container_width=True):
@@ -159,7 +139,7 @@ with col_btn:
 st.markdown("---")
 
 # ==========================================
-# 3. شريط التابات
+# 3. شريط التابات (نظام البلي ستيشن) - تم إضافة عام المجزر
 # ==========================================
 if 'active_tab' not in st.session_state:
     st.session_state.active_tab = 'gov'
@@ -168,7 +148,7 @@ tabs_dict = {
     "📍 المحافظات": "gov",
     "🧊 الثلاجات": "frz",
     "❄️ مخازن المجزر": "slh",
-    "📊 عام المجزر": "slh_gen",
+    "📊 عام المجزر": "slh_gen",  # <--- القسم الجديد
     "📦 المواد الأولية": "mat",
     "🛒 مشتريات المصنفات": "pur_cat",
     "🔪 مشتريات المجزر": "pur_slh"
@@ -185,7 +165,7 @@ st.session_state.active_tab = tabs_dict[selected_tab_name]
 st.markdown("---")
 
 # ==========================================
-# 4. دوال السحب المضادة للتعليق
+# 4. دوال سحب البيانات (المحرك المضمون الأصلي)
 # ==========================================
 def fetch_sheet_csv(url):
     try:
@@ -202,16 +182,16 @@ def fetch_sheet_csv(url):
         except Exception:
             return pd.DataFrame()
 
-def clean_columns(df):
-    df.columns = [str(c).replace('\ufeff', '').replace('\n', '').replace('\r', '').strip() for c in df.columns]
-    return df
-
+# داله القسم الجديد (عام المجزر)
 @st.cache_data(ttl=600)
 def load_slh_general_data():
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTiM4ycja48KN-96D91Ppv0CHRkIzyOBGgpAszLcOEID09N5CYspJSSsU98wvIFyQ/pub?output=csv"
+    # 🔴🔴🔴 هام جداً: ضع رابط ملف "عام المجزر" بصيغة CSV هنا 🔴🔴🔴
+    url = "ضع_رابط_شيت_عام_المجزر_هنا" 
+    
     try:
         df = fetch_sheet_csv(url)
         if df.empty: return pd.DataFrame()
+        # تنظيف مبدئي للأعمدة
         df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
         return df
     except Exception:
@@ -388,22 +368,24 @@ def load_pur_slh_data():
         return pd.DataFrame(), None, None, None, None, None, None, None, None, None
 
 # ==========================================
-# 5. منطق عرض الأقسام (النسخة الكلاسيكية)
+# 5. منطق عرض الأقسام (الكود الأصلي الكلاسيكي)
 # ==========================================
 try:
-    # ------------------ 📊 قسم عام المجزر ------------------
+    # ------------------ 📊 قسم عام المجزر (الجديد) ------------------
     if st.session_state.active_tab == 'slh_gen':
         st.title("📊 عام المجزر (التقرير الشامل)")
         
         df_slh_gen = load_slh_general_data()
         
         if df_slh_gen.empty:
-            st.info("⚠️ تعذر سحب البيانات، يرجى الانتظار والمحاولة مرة أخرى.")
+            st.info("⚠️ يرجى إضافة رابط الـ CSV الخاص بشيت 'عام المجزر' في الكود (دالة load_slh_general_data) ليتم عرض البيانات هنا.")
         else:
             st.success("✅ تم سحب البيانات بنجاح.")
             st.markdown("""
-            **ملاحظة:** يعرض هذا القسم البيانات كما هي موجودة في التقرير المعقد. يمكنك تصفح وتحميل التقرير بالكامل من هنا.
+            **ملاحظة:** لأن هذا الشيت مصمم كتقرير إكسل متقدم (يحتوي على جداول متعددة وخلايا مدمجة في صفحة واحدة)، 
+            فإن النظام يعرضه كجدول بيانات كامل. يمكنك تصفح وتحميل التقرير من هنا.
             """)
+            
             with st.expander("📋 عرض بيانات عام المجزر", expanded=True):
                 st.download_button(label="📥 تحميل التقرير (CSV)", data=df_slh_gen.to_csv(index=False).encode('utf-8'), file_name="slh_general_data.csv", mime="text/csv")
                 st.dataframe(df_slh_gen, use_container_width=True)
@@ -519,7 +501,7 @@ try:
                 st.download_button(label="📥 تحميل جدول المحافظات (CSV)", data=csv_gov, file_name="gov_data.csv", mime="text/csv")
                 st.dataframe(filtered_df, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
+            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
     # ------------------ قسم الثلاجات ------------------
     elif st.session_state.active_tab == 'frz':
@@ -589,7 +571,7 @@ try:
                 st.download_button(label="📥 تحميل جدول الثلاجات (CSV)", data=csv_frz, file_name="freezer_data.csv", mime="text/csv")
                 st.dataframe(filtered_frz, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
+            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
     # ------------------ قسم المجزر ------------------
     elif st.session_state.active_tab == 'slh':
@@ -688,7 +670,7 @@ try:
                     filtered_slh[c_date] = filtered_slh[c_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_slh, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
+            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
     # ------------------ قسم المواد الأولية ------------------
     elif st.session_state.active_tab == 'mat':
@@ -777,11 +759,9 @@ try:
             with st.expander("📋 عرض جدول بيانات المواد الأولية"):
                 csv_mat = filtered_mat.to_csv(index=False).encode('utf-8')
                 st.download_button(label="📥 تحميل جدول المواد الأولية (CSV)", data=csv_mat, file_name="raw_materials_data.csv", mime="text/csv")
-                if c_date and c_date in filtered_mat.columns: 
-                    filtered_mat[c_date] = filtered_mat[c_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_mat, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
+            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
     # ------------------ قسم مشتريات المصنفات ------------------
     elif st.session_state.active_tab == 'pur_cat':
@@ -872,11 +852,9 @@ try:
             with st.expander("📋 عرض السجل الكامل لمشتريات المصنفات"):
                 csv_pur = filtered_pur.to_csv(index=False).encode('utf-8')
                 st.download_button(label="📥 تحميل جدول مشتريات المصنفات (CSV)", data=csv_pur, file_name="pur_cat_data.csv", mime="text/csv")
-                if c_ord_date and c_ord_date in filtered_pur.columns:
-                    filtered_pur[c_ord_date] = filtered_pur[c_ord_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_pur, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
+            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
     # ------------------ قسم مشتريات المجزر ------------------
     elif st.session_state.active_tab == 'pur_slh':
@@ -911,12 +889,6 @@ try:
                         if sel_arr: filtered_slh = filtered_slh[filtered_slh[c_arr].isin(sel_arr)]
                         
                     submitted_pur_slh = st.form_submit_button("🚀 تطبيق الفلاتر")
-
-            if use_date_pur and len(date_range) == 2 and c_ord_date:
-                filtered_slh = filtered_slh[(filtered_slh[c_ord_date].dt.date >= date_range[0]) & (filtered_slh[c_ord_date].dt.date <= date_range[1])]
-            if sel_comp: filtered_slh = filtered_slh[filtered_slh[c_comp].isin(sel_comp)]
-            if sel_cat: filtered_slh = filtered_slh[filtered_slh[c_cat].isin(sel_cat)]
-            if sel_arr: filtered_slh = filtered_slh[filtered_slh[c_arr].isin(sel_arr)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
@@ -987,11 +959,9 @@ try:
             with st.expander("📋 عرض السجل الكامل لمشتريات المجزر"):
                 csv_pur_slh = filtered_slh.to_csv(index=False).encode('utf-8')
                 st.download_button(label="📥 تحميل جدول مشتريات المجزر (CSV)", data=csv_pur_slh, file_name="pur_slh_data.csv", mime="text/csv")
-                if c_ord_date and c_ord_date in filtered_slh.columns:
-                    filtered_slh[c_ord_date] = filtered_slh[c_ord_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_slh, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
+            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
 
 except Exception as e:
     pass
