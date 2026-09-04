@@ -8,11 +8,11 @@
     <!-- ربط الملفات محلياً بدون إنترنت -->
     <script src="tailwind.js"></script>
     <script src="xlsx.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* استخدمنا خط النظام الأساسي للأندرويد حتى يشتغل بدون نت */
         body {
-            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             background-color: #0f172a;
             color: #f8fafc;
             margin: 0;
@@ -177,14 +177,14 @@
                 <div class="w-12 h-12 min-w-[3rem] bg-indigo-500/10 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🗄️</div>
                 <div class="flex-1">
                     <h3 class="text-white font-bold text-lg mb-1 group-hover:text-indigo-400 transition-colors">الأرشيف والسجلات</h3>
-                    <p class="text-slate-400 text-xs leading-relaxed">استعرض كل بياناتك التراكمية من أول يوم استخدام.</p>
+                    <p class="text-slate-400 text-xs leading-relaxed">استعرض كل بياناتك السابقة، وقم بتصديرها لملف إكسل.</p>
                 </div>
             </button>
 
         </main>
     </div>
 
-    <!-- ================= [3] شاشة الخطوط (العمل اليومي) ================= -->
+    <!-- ================= [3] شاشة الخطوط ================= -->
     <div id="tripsScreen" class="flex-col h-full w-full hidden overflow-y-auto bg-[#0f172a]">
         <header class="p-4 bg-[#111827] border-b border-slate-800 flex justify-between items-center sticky top-0 z-40 shadow-md">
             <div class="flex items-center gap-3">
@@ -253,7 +253,7 @@
         <main class="flex-1 p-4 flex flex-col gap-5">
             <div class="grid grid-cols-2 gap-3">
                 <div class="glass-panel p-3 rounded-xl text-center border-t-2 border-t-[#cca344]">
-                    <p class="text-[10px] text-slate-400 mb-1">المستحق التراكمي الكلي</p>
+                    <p class="text-[10px] text-slate-400 mb-1">المستحق التراكمي</p>
                     <h2 id="finalTotal" class="text-xl font-bold text-white">0</h2>
                     <p class="text-[10px] text-[#cca344]">دينار عراقي</p>
                 </div>
@@ -275,8 +275,8 @@
                 </form>
             </div>
 
-            <div class="glass-panel p-4 rounded-xl border border-slate-700">
-                <h3 class="text-sm font-bold text-slate-200 mb-3 border-b border-slate-700 pb-2">⚙️ إعدادات الراتب (الرصيد والتسديد)</h3>
+            <div class="glass-panel p-4 rounded-xl">
+                <h3 class="text-sm font-bold text-slate-200 mb-3 border-b border-slate-700 pb-2">⚙️ إعدادات الراتب (تسديد وخصم)</h3>
                 <div class="flex flex-col gap-3">
                     <div>
                         <label class="text-xs text-slate-400 mb-1 block">أجرة الساعة (دينار):</label>
@@ -288,7 +288,7 @@
                             <input type="number" id="deductions" placeholder="0" min="0" value="0" class="input-field text-rose-500" onchange="saveSalarySettings()">
                         </div>
                         <div>
-                            <label class="text-xs text-slate-400 mb-1 block">إضافة/بونص (رصيد):</label>
+                            <label class="text-xs text-slate-400 mb-1 block">إضافة/بونص (دينار):</label>
                             <input type="number" id="prevBalance" placeholder="0" min="0" value="0" class="input-field text-emerald-400" onchange="saveSalarySettings()">
                         </div>
                     </div>
@@ -344,7 +344,7 @@
         </main>
     </div>
 
-    <!-- ================= [6] شاشة الأرشيف (التراكمي) ================= -->
+    <!-- ================= [6] شاشة الأرشيف ================= -->
     <div id="archiveScreen" class="flex-col h-full w-full hidden overflow-y-auto bg-[#0f172a]">
         <header class="p-4 bg-[#111827] border-b border-slate-800 flex justify-between items-center sticky top-0 z-40 shadow-md">
             <div class="flex items-center gap-3">
@@ -360,7 +360,7 @@
 
         <main class="flex-1 p-4 flex flex-col gap-4">
 
-            <!-- محتوى أرشيف الخطوط -->
+            <!-- أرشيف الخطوط -->
             <div id="archiveTripsContent" class="flex flex-col gap-4">
                 <div class="glass-panel p-3 rounded-xl flex flex-col gap-2 border-t-2 border-indigo-500">
                     <div class="flex justify-between items-center">
@@ -373,7 +373,7 @@
                     <input type="text" id="archiveTripsSearch" oninput="updateArchiveTripsUI()" placeholder="بحث عن سائق..." class="input-field py-2 text-sm">
                     <div class="flex gap-2">
                         <select id="archiveTripsMonth" onchange="updateArchiveTripsUI()" class="input-field py-2 text-xs flex-1">
-                            <option value="all">📅 كل السجلات (من البداية)</option>
+                            <option value="all">📅 كل السجلات التراكمية</option>
                         </select>
                         <button onclick="exportTripsCSV()" class="bg-indigo-600 text-white px-4 rounded-lg text-xs font-bold whitespace-nowrap">تصدير CSV 📥</button>
                     </div>
@@ -381,14 +381,14 @@
 
                 <div class="glass-panel p-4 rounded-xl">
                     <div class="flex justify-between items-center mb-3 border-b border-slate-700 pb-2">
-                        <h3 class="text-sm font-bold text-slate-200">📜 السجلات التراكمية للخطوط</h3>
+                        <h3 class="text-sm font-bold text-slate-200">📜 كل سجلات الخطوط</h3>
                         <button onclick="clearTripsData()" class="text-[10px] text-rose-500 hover:underline">تصفير الكل 🗑️</button>
                     </div>
                     <div id="archiveTripsLog" class="flex flex-col gap-2 max-h-96 overflow-y-auto pr-1"></div>
                 </div>
             </div>
 
-            <!-- محتوى أرشيف الدوام -->
+            <!-- أرشيف الدوام -->
             <div id="archiveSalaryContent" class="hidden flex-col gap-4">
                 <div class="glass-panel p-3 rounded-xl flex flex-col gap-2 border-t-2 border-indigo-500">
                     <div class="flex justify-between items-center">
@@ -403,14 +403,14 @@
 
                 <div class="glass-panel p-3 rounded-xl flex gap-2">
                     <select id="archiveSalaryMonth" onchange="updateArchiveSalaryUI()" class="input-field py-2 text-xs flex-1">
-                        <option value="all">📅 كل السجلات (من البداية)</option>
+                        <option value="all">📅 كل السجلات التراكمية</option>
                     </select>
                     <button onclick="exportSalaryCSV()" class="bg-indigo-600 text-white px-4 rounded-lg text-xs font-bold whitespace-nowrap">تصدير CSV 📥</button>
                 </div>
 
                 <div class="glass-panel p-4 rounded-xl">
                     <div class="flex justify-between items-center mb-3 border-b border-slate-700 pb-2">
-                        <h3 class="text-sm font-bold text-slate-200">📜 السجلات التراكمية للدوام</h3>
+                        <h3 class="text-sm font-bold text-slate-200">📜 كل سجلات الدوام</h3>
                         <div class="flex gap-2">
                             <button onclick="backupSalaryData()" class="text-[10px] text-blue-400 hover:underline">💾 نسخة</button>
                             <button onclick="document.getElementById('restoreFile').click()" class="text-[10px] text-emerald-400 hover:underline">📥 استعادة</button>
@@ -430,7 +430,7 @@
 <script>
     const STORAGE_PREFIX = 'shamelApp_';
 
-    // ======================= دوال التنبيهات =======================
+    // ======================= دوال التنبيهات المخصصة =======================
     function customAlert(msg, title = "تنبيه") {
         return new Promise(resolve => {
             const modal = document.getElementById('customDialog');
@@ -661,7 +661,7 @@
     }
 
     async function clearTripsData() {
-        if (!(await customConfirm('تحذير: هل أنت متأكد من مسح جميع الديون والخطوط وتصفيرها بالكامل؟ (لا يمكن التراجع)'))) return;
+        if (!(await customConfirm('هل أنت متأكد من مسح جميع الديون والخطوط وتصفيرها بالكامل؟'))) return;
         trips = []; localStorage.setItem(STORAGE_PREFIX + 'trips', JSON.stringify(trips));
         updateTripsUI(); updateArchiveTripsUI();
     }
@@ -678,13 +678,12 @@
                 <div class="flex justify-between text-sm font-bold text-white"><span class="pr-8">${escapeHtml(t.driver)}</span><span class="${isPay ? 'text-rose-500' : 'text-emerald-400'}">${isPay ? '-' : '+'} ${t.fare.toLocaleString('ar-IQ')}</span></div>
             </div>`;
         });
-        return html || '<p class="text-xs text-slate-500 text-center">لا توجد حركات مطابقة</p>';
+        return html || '<p class="text-xs text-slate-500 text-center">لا توجد حركات</p>';
     }
 
     function updateTripsUI() {
         let debt = 0; let dDebts = {};
-        
-        // حساب الديون التراكمية الإجمالية
+        // الحساب للديون الإجمالية (لأنها تراكمية)
         trips.forEach(t => {
             if (!dDebts[t.driver]) dDebts[t.driver] = 0;
             if (t.type === 'pay') { dDebts[t.driver] -= t.fare; debt -= t.fare; }
@@ -700,9 +699,9 @@
             const status = v > 0 ? `<span class="text-amber-500 font-bold">${v.toLocaleString('ar-IQ')}</span>` : `<span class="text-emerald-400 font-bold">${Math.abs(v).toLocaleString('ar-IQ')} تسديد زائد</span>`;
             htmlD += `<div class="flex justify-between items-center bg-[#111827] p-2 rounded-lg border border-slate-700"><div><h4 class="text-sm text-white">${escapeHtml(d)}</h4></div><div>${status}</div></div>`;
         });
-        document.getElementById('trips_driversSummary').innerHTML = htmlD || '<p class="text-xs text-slate-500 text-center">لا توجد ديون نشطة حالياً</p>';
+        document.getElementById('trips_driversSummary').innerHTML = htmlD || '<p class="text-xs text-slate-500 text-center">تم تصفية جميع الديون</p>';
 
-        // عرض أحدث 15 حركة فقط بالشاشة الرئيسية
+        // عرض أحدث 15 حركة بالشاشة الرئيسية
         const recentTrips = [...trips].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 15);
         document.getElementById('tripsLog').innerHTML = generateTripsHtml(recentTrips);
         document.getElementById('savedDrivers').innerHTML = uniqueDrivers.map(d => `<option value="${escapeHtml(d)}">`).join('');
@@ -751,7 +750,7 @@
             if (idx !== -1) salaryRecords[idx] = { id: editingWorkId, date, minutes: mins, amount, timeStr, rateAtTime: rate };
             cancelEditWork();
         } else {
-            if (salaryRecords.find(r => r.date === date) && !(await customConfirm(`التاريخ ${date} مسجل مسبقاً. هل تريد إضافة دوام آخر لنفس اليوم؟`))) return;
+            if (salaryRecords.find(r => r.date === date) && !(await customConfirm(`التاريخ مسجل. إضافة دوام آخر لنفس اليوم؟`))) return;
             salaryRecords.unshift({ id: Date.now(), date, minutes: mins, amount, timeStr, rateAtTime: rate });
         }
 
@@ -774,7 +773,7 @@
     }
 
     async function deleteWork(id) {
-        if (!(await customConfirm('هل أنت متأكد من حذف سجل الدوام هذا؟'))) return;
+        if (!(await customConfirm('متأكد من حذف هذا الدوام؟'))) return;
         salaryRecords = salaryRecords.filter(r => r.id !== id);
         if (editingWorkId === id) cancelEditWork();
         localStorage.setItem(STORAGE_PREFIX + 'salaryRecords', JSON.stringify(salaryRecords));
@@ -801,15 +800,14 @@
         const minusDeduct = parseFloat(document.getElementById('deductions').value) || 0;
 
         let totalAmount = 0; let totalMins = 0;
-        // حساب الراتب التراكمي
+        // الحساب الكلي التراكمي
         salaryRecords.forEach(r => { totalAmount += r.amount; totalMins += r.minutes; });
-        
         const final = totalAmount + plusBonus - minusDeduct;
 
         document.getElementById('finalTotal').textContent = Math.round(final).toLocaleString('ar-IQ');
         document.getElementById('totalMinutes').textContent = totalMins.toLocaleString('ar-IQ');
         
-        // عرض أحدث 15 يوم بالشاشة الرئيسية
+        // عرض أحدث 15 سجل بالشاشة الرئيسية
         const recentSalary = [...salaryRecords].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 15);
         document.getElementById('workLog').innerHTML = generateSalaryHtml(recentSalary);
     }
@@ -820,10 +818,10 @@
     function onTaskTypeChange() {
         const type = document.getElementById('taskType').value;
         const titleInput = document.getElementById('taskTitle');
-        if (type === 'driver') titleInput.placeholder = "مثال: استلام دفعة من أبو كرار";
+        if (type === 'driver') titleInput.placeholder = "مثال: استلام دفعة من السائق";
         else if (type === 'work') titleInput.placeholder = "مثال: مراجعة دوام يوم الخميس";
-        else if (type === 'financial') titleInput.placeholder = "مثال: دفع قسط السيارة";
-        else titleInput.placeholder = "مثال: مهمة شخصية أو عملية";
+        else if (type === 'financial') titleInput.placeholder = "مثال: دفع قسط شهري";
+        else titleInput.placeholder = "مثال: مهمة شخصية";
     }
 
     function saveTask(e) {
@@ -859,7 +857,7 @@
         tasks.forEach(t => {
             let badgeColor = 'bg-blue-500/20 text-blue-400'; let typeName = 'عامة';
             if (t.type === 'driver') { typeName = 'تذكير دفعة'; badgeColor = 'bg-amber-500/20 text-amber-400'; }
-            else if (t.type === 'work') { typeName = 'تسجيل دوام'; badgeColor = 'bg-emerald-500/20 text-emerald-400'; }
+            else if (t.type === 'work') { typeName = 'تذكير دوام'; badgeColor = 'bg-emerald-500/20 text-emerald-400'; }
             else if (t.type === 'financial') { typeName = 'هدف مالي'; badgeColor = 'bg-purple-500/20 text-purple-400'; }
 
             html += `<div class="bg-[#111827] p-3 rounded-lg border border-slate-700 relative fade-in flex items-center justify-between ${t.completed ? 'opacity-50' : ''}">
@@ -877,7 +875,7 @@
         container.innerHTML = html;
     }
 
-    // ======================= قسم الأرشيف =======================
+    // ======================= قسم الأرشيف (التراكمي) =======================
     function switchArchiveTab(tab) {
         document.getElementById('tabArchiveTrips').classList.toggle('active', tab === 'trips');
         document.getElementById('tabArchiveSalary').classList.toggle('active', tab === 'salary');
@@ -908,6 +906,7 @@
         let filtered = trips.filter(t => t.driver.toLowerCase().includes(searchTerm));
         if (monthFilter !== 'all') filtered = filtered.filter(t => t.date && t.date.startsWith(monthFilter));
         
+        // حساب إجمالي الديون المعروضة بالفلتر
         let debt = 0;
         filtered.forEach(t => { if(t.type === 'pay') debt -= t.fare; else debt += t.fare; });
         document.getElementById('archiveTripsTotal').innerText = Math.max(0, debt).toLocaleString('ar-IQ') + ' د.ع';
@@ -923,6 +922,7 @@
         let filtered = salaryRecords;
         if (monthFilter !== 'all') filtered = salaryRecords.filter(r => r.date && r.date.startsWith(monthFilter));
         
+        // حساب الإجمالي المعروض
         let totalMoney = 0; let totalMins = 0;
         filtered.forEach(r => { totalMoney += r.amount; totalMins += r.minutes; });
         document.getElementById('archiveSalaryTotalMoney').innerText = Math.round(totalMoney).toLocaleString('ar-IQ') + ' د.ع';
