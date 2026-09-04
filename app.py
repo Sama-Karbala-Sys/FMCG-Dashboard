@@ -4,7 +4,6 @@ import plotly.express as px
 import requests
 import io
 import datetime
-import time
 import traceback
 
 # ==========================================
@@ -32,15 +31,15 @@ st.markdown("""
         }
 
         /* =========================================
-           🚀 1. التابات (الأقسام العلوية) - تأثير PS Hover
+           🚀 1. التابات (الأقسام العلوية)
            ========================================= */
         div.row-widget.stRadio > div {
             display: flex; flex-direction: row; justify-content: center; gap: 15px;
-            background-color: transparent; padding: 20px 10px; flex-wrap: wrap;
+            background-color: transparent; padding: 20px 10px;
         }
         div.stRadio > div[role="radiogroup"] > label {
             background-color: rgba(30, 41, 59, 0.8) !important; border: 1px solid #334155 !important;
-            padding: 12px 20px !important; border-radius: 12px !important;
+            padding: 12px 25px !important; border-radius: 12px !important;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
             cursor: pointer !important; box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
         }
@@ -66,14 +65,18 @@ st.markdown("""
            ========================================= */
         div[data-testid="metric-container"] {
             background-color: rgba(30, 41, 59, 0.6) !important;
-            border: 1px solid #334155; padding: 20px; border-radius: 16px;
+            border: 1px solid #334155;
+            padding: 20px;
+            border-radius: 16px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         div[data-testid="metric-container"]:hover {
             transform: translateY(-8px) scale(1.05);
             background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.9)) !important;
-            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4); border-color: #38bdf8; z-index: 5;
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4);
+            border-color: #38bdf8;
+            z-index: 5;
         }
 
         /* =========================================
@@ -81,43 +84,59 @@ st.markdown("""
            ========================================= */
         .stPlotlyChart {
             background-color: rgba(30, 41, 59, 0.4) !important;
-            border-radius: 16px; padding: 15px; border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 15px;
+            border: 1px solid #334155;
             transition: all 0.4s ease;
         }
         .stPlotlyChart:hover {
             transform: scale(1.03) translateY(-5px);
             background-color: rgba(30, 41, 59, 0.8) !important;
-            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); border-color: #a78bfa; z-index: 5;
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3);
+            border-color: #a78bfa;
+            z-index: 5;
         }
 
         /* =========================================
            🚀 4. الفلاتر والقوائم المنسدلة (Selectboxes)
            ========================================= */
         div[data-baseweb="select"] > div, input {
-            transition: all 0.3s ease; border-radius: 10px !important;
-            background-color: rgba(30, 41, 59, 0.7) !important; border: 1px solid #475569 !important;
+            transition: all 0.3s ease;
+            border-radius: 10px !important;
+            background-color: rgba(30, 41, 59, 0.7) !important;
+            border: 1px solid #475569 !important;
         }
         div[data-baseweb="select"] > div:hover, input:hover {
-            transform: scale(1.03); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4) !important; border-color: #34d399 !important;
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4) !important;
+            border-color: #34d399 !important;
         }
 
         /* =========================================
-           🚀 5. زر التطبيق والجداول المطوية
+           🚀 5. القوائم المطوية (Expanders)
            ========================================= */
         div[data-testid="stExpander"] {
-            background-color: rgba(30, 41, 59, 0.5) !important; border-radius: 12px; border: 1px solid #334155; transition: all 0.3s ease;
+            background-color: rgba(30, 41, 59, 0.5) !important;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
         }
         div[data-testid="stExpander"]:hover {
-            transform: translateY(-3px) scale(1.01); background-color: rgba(30, 41, 59, 0.8) !important;
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2); border-color: #fbbf24;
+            transform: translateY(-3px) scale(1.01);
+            background-color: rgba(30, 41, 59, 0.8) !important;
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+            border-color: #fbbf24;
         }
-        div[data-testid="stFormSubmitButton"] > button {
-            height: 50px; font-size: 18px !important; font-weight: bold !important;
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important; color: #ffffff !important;
-            border: none; border-radius: 8px !important; width: 100%; transition: all 0.3s ease-in-out;
+
+        /* =========================================
+           🚀 6. الجداول (Dataframes)
+           ========================================= */
+        div[data-testid="stDataFrame"] {
+            transition: all 0.3s ease;
         }
-        div[data-testid="stFormSubmitButton"] > button:hover {
-            transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 15px rgba(99, 102, 241, 0.5);
+        div[data-testid="stDataFrame"]:hover {
+            transform: scale(1.01);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -139,7 +158,7 @@ with col_btn:
 st.markdown("---")
 
 # ==========================================
-# 3. شريط التابات (نظام البلي ستيشن) - تم إضافة عام المجزر
+# 3. شريط التابات (نظام البلي ستيشن)
 # ==========================================
 if 'active_tab' not in st.session_state:
     st.session_state.active_tab = 'gov'
@@ -148,7 +167,6 @@ tabs_dict = {
     "📍 المحافظات": "gov",
     "🧊 الثلاجات": "frz",
     "❄️ مخازن المجزر": "slh",
-    "📊 عام المجزر": "slh_gen",  # <--- القسم الجديد
     "📦 المواد الأولية": "mat",
     "🛒 مشتريات المصنفات": "pur_cat",
     "🔪 مشتريات المجزر": "pur_slh"
@@ -181,21 +199,6 @@ def fetch_sheet_csv(url):
                 return pd.DataFrame()
         except Exception:
             return pd.DataFrame()
-
-# داله القسم الجديد (عام المجزر)
-@st.cache_data(ttl=600)
-def load_slh_general_data():
-    # 🔴🔴🔴 هام جداً: ضع رابط ملف "عام المجزر" بصيغة CSV هنا 🔴🔴🔴
-    url = "ضع_رابط_شيت_عام_المجزر_هنا" 
-    
-    try:
-        df = fetch_sheet_csv(url)
-        if df.empty: return pd.DataFrame()
-        # تنظيف مبدئي للأعمدة
-        df.columns = df.columns.astype(str).str.replace(r'[\ufeff\n\r]', '', regex=True).str.strip()
-        return df
-    except Exception:
-        return pd.DataFrame()
 
 @st.cache_data(ttl=600)
 def load_gov_data():
@@ -371,55 +374,33 @@ def load_pur_slh_data():
 # 5. منطق عرض الأقسام (الكود الأصلي الكلاسيكي)
 # ==========================================
 try:
-    # ------------------ 📊 قسم عام المجزر (الجديد) ------------------
-    if st.session_state.active_tab == 'slh_gen':
-        st.title("📊 عام المجزر (التقرير الشامل)")
-        
-        df_slh_gen = load_slh_general_data()
-        
-        if df_slh_gen.empty:
-            st.info("⚠️ يرجى إضافة رابط الـ CSV الخاص بشيت 'عام المجزر' في الكود (دالة load_slh_general_data) ليتم عرض البيانات هنا.")
-        else:
-            st.success("✅ تم سحب البيانات بنجاح.")
-            st.markdown("""
-            **ملاحظة:** لأن هذا الشيت مصمم كتقرير إكسل متقدم (يحتوي على جداول متعددة وخلايا مدمجة في صفحة واحدة)، 
-            فإن النظام يعرضه كجدول بيانات كامل. يمكنك تصفح وتحميل التقرير من هنا.
-            """)
-            
-            with st.expander("📋 عرض بيانات عام المجزر", expanded=True):
-                st.download_button(label="📥 تحميل التقرير (CSV)", data=df_slh_gen.to_csv(index=False).encode('utf-8'), file_name="slh_general_data.csv", mime="text/csv")
-                st.dataframe(df_slh_gen, use_container_width=True)
-
     # ------------------ قسم المحافظات ------------------
-    elif st.session_state.active_tab == 'gov':
+    if st.session_state.active_tab == 'gov':
         df_gov, col_date, col_gov, col_agent, col_item, col_cat, col_ff, col_label, col_ton, col_qty = load_gov_data()
         
         if not df_gov.empty:
             filtered_df = df_gov.copy()
             with st.expander("🔍 فلاتر قسم المحافظات", expanded=True):
-                with st.form("gov_form"):
-                    f1, f2, f3, f4 = st.columns(4)
-                    if col_date and col_date in filtered_df.columns:
-                        valid_dates = filtered_df[col_date].dropna()
-                        if not valid_dates.empty:
-                            min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            use_date = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="gov_chk")
-                            if use_date:
-                                date_range = f1.date_input("اختر الفترة", [min_d, max_d], min_value=min_d, max_value=max_d, key="gov_date")
-                                if len(date_range) == 2:
-                                    filtered_df = filtered_df[(filtered_df[col_date].dt.date >= date_range[0]) & (filtered_df[col_date].dt.date <= date_range[1])]
+                f1, f2, f3, f4 = st.columns(4)
+                if col_date and col_date in filtered_df.columns:
+                    valid_dates = filtered_df[col_date].dropna()
+                    if not valid_dates.empty:
+                        min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
+                        use_date = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="gov_chk")
+                        if use_date:
+                            date_range = f1.date_input("اختر الفترة", [min_d, max_d], min_value=min_d, max_value=max_d, key="gov_date")
+                            if len(date_range) == 2:
+                                filtered_df = filtered_df[(filtered_df[col_date].dt.date >= date_range[0]) & (filtered_df[col_date].dt.date <= date_range[1])]
 
-                    if col_gov and col_gov in filtered_df.columns:
-                        sel_gov = f2.multiselect("📍 المحافظة", filtered_df[col_gov].unique(), key="gov_gov")
-                        if sel_gov: filtered_df = filtered_df[filtered_df[col_gov].isin(sel_gov)]
-                    if col_ff and col_ff in filtered_df.columns:
-                        sel_ff = f3.multiselect("❄️ طازج أو مجمد", filtered_df[col_ff].unique(), key="gov_ff")
-                        if sel_ff: filtered_df = filtered_df[filtered_df[col_ff].isin(sel_ff)]
-                    if col_label and col_label in filtered_df.columns:
-                        sel_label = f4.multiselect("🏷️ العلامة التجارية", filtered_df[col_label].unique(), key="gov_lbl")
-                        if sel_label: filtered_df = filtered_df[filtered_df[col_label].isin(sel_label)]
-
-                    submitted_gov = st.form_submit_button("🚀 تطبيق الفلاتر")
+                if col_gov and col_gov in filtered_df.columns:
+                    sel_gov = f2.multiselect("📍 المحافظة", filtered_df[col_gov].unique(), key="gov_gov")
+                    if sel_gov: filtered_df = filtered_df[filtered_df[col_gov].isin(sel_gov)]
+                if col_ff and col_ff in filtered_df.columns:
+                    sel_ff = f3.multiselect("❄️ طازج أو مجمد", filtered_df[col_ff].unique(), key="gov_ff")
+                    if sel_ff: filtered_df = filtered_df[filtered_df[col_ff].isin(sel_ff)]
+                if col_label and col_label in filtered_df.columns:
+                    sel_label = f4.multiselect("🏷️ العلامة التجارية", filtered_df[col_label].unique(), key="gov_lbl")
+                    if sel_label: filtered_df = filtered_df[filtered_df[col_label].isin(sel_label)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             c1, c2, c3, c4 = st.columns(4)
@@ -479,21 +460,19 @@ try:
             
             st.markdown("---")
             st.markdown("### 🛠️ مختبر التحليلات المخصص")
-            with st.form("custom_gov_form"):
-                ca1, ca2 = st.columns(2)
-                gov_cat_cols = [c for c in [col_gov, col_agent, col_item, col_cat, col_ff, col_label] if c and c in filtered_df.columns]
-                gov_num_cols = [c for c in [col_ton, col_qty] if c and c in filtered_df.columns]
-                x_axis = ca1.selectbox("اختر حقل المقارنة:", gov_cat_cols) if gov_cat_cols else None
-                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", gov_num_cols) if gov_num_cols else None
-                submitted_ca = st.form_submit_button("📊 رسم التحليل")
-
-            if submitted_ca and x_axis and y_axis:
-                try:
-                    custom_df = filtered_df.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
-                    fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
-                    st.plotly_chart(fig_custom, use_container_width=True)
-                except Exception: pass
+            ca1, ca2 = st.columns(2)
+            gov_cat_cols = [c for c in [col_gov, col_agent, col_item, col_cat, col_ff, col_label] if c and c in filtered_df.columns]
+            gov_num_cols = [c for c in [col_ton, col_qty] if c and c in filtered_df.columns]
+            if gov_cat_cols and gov_num_cols:
+                x_axis = ca1.selectbox("اختر حقل المقارنة:", gov_cat_cols, key="gov_x")
+                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", gov_num_cols, key="gov_y")
+                if x_axis and y_axis:
+                    try:
+                        custom_df = filtered_df.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
+                        fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
+                        fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
+                        st.plotly_chart(fig_custom, use_container_width=True)
+                    except Exception: pass
 
             st.markdown("---")
             with st.expander("📋 عرض جدول تفاصيل المحافظات"):
@@ -501,7 +480,7 @@ try:
                 st.download_button(label="📥 تحميل جدول المحافظات (CSV)", data=csv_gov, file_name="gov_data.csv", mime="text/csv")
                 st.dataframe(filtered_df, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
+            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
 
     # ------------------ قسم الثلاجات ------------------
     elif st.session_state.active_tab == 'frz':
@@ -549,21 +528,19 @@ try:
 
             st.markdown("---")
             st.markdown("### 🛠️ مختبر التحليلات المخصص")
-            with st.form("custom_frz_form"):
-                ca1, ca2 = st.columns(2)
-                frz_cat_cols = [c for c in [c_item, c_frz] if c and c in filtered_frz.columns]
-                frz_num_cols = [c for c in [c_start, c_prod, c_sold, c_short, c_final] if c and c in filtered_frz.columns]
-                x_axis = ca1.selectbox("اختر حقل المقارنة:", frz_cat_cols) if frz_cat_cols else None
-                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", frz_num_cols) if frz_num_cols else None
-                submitted_ca_frz = st.form_submit_button("📊 رسم التحليل")
-
-            if submitted_ca_frz and x_axis and y_axis:
-                try:
-                    custom_df = filtered_frz.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
-                    fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
-                    st.plotly_chart(fig_custom, use_container_width=True)
-                except Exception: pass
+            ca1, ca2 = st.columns(2)
+            frz_cat_cols = [c for c in [c_item, c_frz] if c and c in filtered_frz.columns]
+            frz_num_cols = [c for c in [c_start, c_prod, c_sold, c_short, c_final] if c and c in filtered_frz.columns]
+            if frz_cat_cols and frz_num_cols:
+                x_axis = ca1.selectbox("اختر حقل المقارنة:", frz_cat_cols, key="frz_x")
+                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", frz_num_cols, key="frz_y")
+                if x_axis and y_axis:
+                    try:
+                        custom_df = filtered_frz.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
+                        fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
+                        fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
+                        st.plotly_chart(fig_custom, use_container_width=True)
+                    except Exception: pass
 
             st.markdown("---")
             with st.expander("📋 عرض جدول أرصدة الثلاجات"):
@@ -571,7 +548,7 @@ try:
                 st.download_button(label="📥 تحميل جدول الثلاجات (CSV)", data=csv_frz, file_name="freezer_data.csv", mime="text/csv")
                 st.dataframe(filtered_frz, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
+            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
 
     # ------------------ قسم المجزر ------------------
     elif st.session_state.active_tab == 'slh':
@@ -580,23 +557,19 @@ try:
         if not df_slh.empty:
             filtered_slh = df_slh.copy()
             with st.expander("🔍 فلاتر مخازن المجزر", expanded=True):
-                with st.form("slh_form"):
-                    f1, f2 = st.columns(2)
-                    if c_date and c_date in filtered_slh.columns:
-                        valid_dates = filtered_slh[c_date].dropna()
-                        if not valid_dates.empty:
-                            min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            use_date_slh = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="slh_chk")
-                            if use_date_slh:
-                                date_range = f1.date_input("تحديد فترة المجزر", [min_d, max_d], min_value=min_d, max_value=max_d, key="slh_date")
-                                if len(date_range) == 2:
-                                    filtered_slh = filtered_slh[(filtered_slh[c_date].dt.date >= date_range[0]) & (filtered_slh[c_date].dt.date <= date_range[1])]
-
-                    if c_item and c_item in filtered_slh.columns:
-                        sel_item = f2.multiselect("اختر المادة", filtered_slh[c_item].unique(), key="slh_item_sel")
-                        if sel_item: filtered_slh = filtered_slh[filtered_slh[c_item].isin(sel_item)]
-
-                    submitted_slh = st.form_submit_button("🚀 تطبيق الفلاتر")
+                f1, f2 = st.columns(2)
+                if c_date and c_date in filtered_slh.columns:
+                    valid_dates = filtered_slh[c_date].dropna()
+                    if not valid_dates.empty:
+                        min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
+                        use_date_slh = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="slh_chk")
+                        if use_date_slh:
+                            date_range = f1.date_input("تحديد فترة المجزر", [min_d, max_d], min_value=min_d, max_value=max_d, key="slh_date")
+                            if len(date_range) == 2:
+                                filtered_slh = filtered_slh[(filtered_slh[c_date].dt.date >= date_range[0]) & (filtered_slh[c_date].dt.date <= date_range[1])]
+                if c_item and c_item in filtered_slh.columns:
+                    sel_item = f2.multiselect("اختر المادة", filtered_slh[c_item].unique(), key="slh_item_sel")
+                    if sel_item: filtered_slh = filtered_slh[filtered_slh[c_item].isin(sel_item)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
@@ -646,21 +619,19 @@ try:
             
             st.markdown("---")
             st.markdown("### 🛠️ مختبر التحليلات المخصص")
-            with st.form("custom_slh_form"):
-                ca1, ca2 = st.columns(2)
-                slh_cat_cols = [c for c in [c_item, c_code] if c and c in filtered_slh.columns]
-                slh_num_cols = [c for c in [c_qty, c_prev, c_prod, c_sold] if c and c in filtered_slh.columns]
-                x_axis = ca1.selectbox("اختر حقل المقارنة:", slh_cat_cols) if slh_cat_cols else None
-                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", slh_num_cols) if slh_num_cols else None
-                submitted_ca_slh = st.form_submit_button("📊 رسم التحليل")
-
-            if submitted_ca_slh and x_axis and y_axis:
-                try:
-                    custom_df = filtered_slh.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
-                    fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
-                    st.plotly_chart(fig_custom, use_container_width=True)
-                except Exception: pass
+            ca1, ca2 = st.columns(2)
+            slh_cat_cols = [c for c in [c_item, c_code] if c and c in filtered_slh.columns]
+            slh_num_cols = [c for c in [c_qty, c_prev, c_prod, c_sold] if c and c in filtered_slh.columns]
+            if slh_cat_cols and slh_num_cols:
+                x_axis = ca1.selectbox("اختر حقل المقارنة:", slh_cat_cols, key="slh_x")
+                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", slh_num_cols, key="slh_y")
+                if x_axis and y_axis:
+                    try:
+                        custom_df = filtered_slh.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
+                        fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
+                        fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
+                        st.plotly_chart(fig_custom, use_container_width=True)
+                    except Exception: pass
 
             st.markdown("---")
             with st.expander("📋 عرض جدول بيانات المجزر"):
@@ -670,7 +641,7 @@ try:
                     filtered_slh[c_date] = filtered_slh[c_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_slh, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
+            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
 
     # ------------------ قسم المواد الأولية ------------------
     elif st.session_state.active_tab == 'mat':
@@ -679,29 +650,25 @@ try:
         if not df_mat.empty:
             filtered_mat = df_mat.copy()
             with st.expander("📦 فلاتر المواد الأولية", expanded=True):
-                with st.form("mat_form"):
-                    f1, f2, f3, f4 = st.columns(4)
-                    if c_date and c_date in filtered_mat.columns:
-                        valid_dates = filtered_mat[c_date].dropna()
-                        if not valid_dates.empty:
-                            min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            use_date_mat = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="mat_chk")
-                            if use_date_mat:
-                                date_range = f1.date_input("اختر الفترة", [min_d, max_d], min_value=min_d, max_value=max_d, key="mat_date")
-                                if len(date_range) == 2:
-                                    filtered_mat = filtered_mat[(filtered_mat[c_date].dt.date >= date_range[0]) & (filtered_mat[c_date].dt.date <= date_range[1])]
-
-                    if c_dept and c_dept in filtered_mat.columns:
-                        sel_dept = f2.multiselect("اختر القسم", filtered_mat[c_dept].unique(), key="mat_dept")
-                        if sel_dept: filtered_mat = filtered_mat[filtered_mat[c_dept].isin(sel_dept)]
-                    if c_type and c_type in filtered_mat.columns:
-                        sel_type = f3.multiselect("نوع الإذن", filtered_mat[c_type].unique(), key="mat_type")
-                        if sel_type: filtered_mat = filtered_mat[filtered_mat[c_type].isin(sel_type)]
-                    if c_cat and c_cat in filtered_mat.columns:
-                        sel_cat = f4.multiselect("التصنيف", filtered_mat[c_cat].unique(), key="mat_cat")
-                        if sel_cat: filtered_mat = filtered_mat[filtered_mat[c_cat].isin(sel_cat)]
-                        
-                    submitted_mat = st.form_submit_button("🚀 تطبيق الفلاتر")
+                f1, f2, f3, f4 = st.columns(4)
+                if c_date and c_date in filtered_mat.columns:
+                    valid_dates = filtered_mat[c_date].dropna()
+                    if not valid_dates.empty:
+                        min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
+                        use_date_mat = f1.checkbox("☑️ تفعيل فلتر التاريخ", value=False, key="mat_chk")
+                        if use_date_mat:
+                            date_range = f1.date_input("اختر الفترة", [min_d, max_d], min_value=min_d, max_value=max_d, key="mat_date")
+                            if len(date_range) == 2:
+                                filtered_mat = filtered_mat[(filtered_mat[c_date].dt.date >= date_range[0]) & (filtered_mat[c_date].dt.date <= date_range[1])]
+                if c_dept and c_dept in filtered_mat.columns:
+                    sel_dept = f2.multiselect("اختر القسم", filtered_mat[c_dept].unique(), key="mat_dept")
+                    if sel_dept: filtered_mat = filtered_mat[filtered_mat[c_dept].isin(sel_dept)]
+                if c_type and c_type in filtered_mat.columns:
+                    sel_type = f3.multiselect("نوع الإذن", filtered_mat[c_type].unique(), key="mat_type")
+                    if sel_type: filtered_mat = filtered_mat[filtered_mat[c_type].isin(sel_type)]
+                if c_cat and c_cat in filtered_mat.columns:
+                    sel_cat = f4.multiselect("التصنيف", filtered_mat[c_cat].unique(), key="mat_cat")
+                    if sel_cat: filtered_mat = filtered_mat[filtered_mat[c_cat].isin(sel_cat)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
@@ -739,29 +706,29 @@ try:
 
             st.markdown("---")
             st.markdown("### 🛠️ مختبر التحليلات المخصص")
-            with st.form("custom_mat_form"):
-                ca1, ca2 = st.columns(2)
-                mat_cat_cols = [c for c in [c_dept, c_type, c_cat, c_item] if c and c in filtered_mat.columns]
-                mat_num_cols = [c for c in [c_qty, c_bal] if c and c in filtered_mat.columns]
-                x_axis = ca1.selectbox("اختر حقل المقارنة:", mat_cat_cols) if mat_cat_cols else None
-                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", mat_num_cols) if mat_num_cols else None
-                submitted_ca_mat = st.form_submit_button("📊 رسم التحليل")
-
-            if submitted_ca_mat and x_axis and y_axis:
-                try:
-                    custom_df = filtered_mat.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
-                    fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
-                    st.plotly_chart(fig_custom, use_container_width=True)
-                except Exception: pass
+            ca1, ca2 = st.columns(2)
+            mat_cat_cols = [c for c in [c_dept, c_type, c_cat, c_item] if c and c in filtered_mat.columns]
+            mat_num_cols = [c for c in [c_qty, c_bal] if c and c in filtered_mat.columns]
+            if mat_cat_cols and mat_num_cols:
+                x_axis = ca1.selectbox("اختر حقل المقارنة:", mat_cat_cols, key="mat_x")
+                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", mat_num_cols, key="mat_y")
+                if x_axis and y_axis:
+                    try:
+                        custom_df = filtered_mat.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
+                        fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
+                        fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
+                        st.plotly_chart(fig_custom, use_container_width=True)
+                    except Exception: pass
 
             st.markdown("---")
             with st.expander("📋 عرض جدول بيانات المواد الأولية"):
                 csv_mat = filtered_mat.to_csv(index=False).encode('utf-8')
                 st.download_button(label="📥 تحميل جدول المواد الأولية (CSV)", data=csv_mat, file_name="raw_materials_data.csv", mime="text/csv")
+                if c_date and c_date in filtered_mat.columns: 
+                    filtered_mat[c_date] = filtered_mat[c_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_mat, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
+            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
 
     # ------------------ قسم مشتريات المصنفات ------------------
     elif st.session_state.active_tab == 'pur_cat':
@@ -770,29 +737,25 @@ try:
         if not df_pur.empty:
             filtered_pur = df_pur.copy()
             with st.expander("🔍 فلاتر مشتريات المصنفات", expanded=True):
-                with st.form("pur_cat_form"):
-                    f1, f2, f3, f4 = st.columns(4)
-                    if c_ord_date and c_ord_date in filtered_pur.columns:
-                        valid_dates = filtered_pur[c_ord_date].dropna()
-                        if not valid_dates.empty:
-                            min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False, key="pur_chk")
-                            if use_date_pur:
-                                date_range = f1.date_input("اختر فترة الطلب", [min_d, max_d], min_value=min_d, max_value=max_d, key="pur_date")
-                                if len(date_range) == 2:
-                                    filtered_pur = filtered_pur[(filtered_pur[c_ord_date].dt.date >= date_range[0]) & (filtered_pur[c_ord_date].dt.date <= date_range[1])]
-
-                    if c_comp and c_comp in filtered_pur.columns:
-                        sel_comp = f2.multiselect("🏢 الشركة الموردة", filtered_pur[c_comp].unique(), key="pur_comp")
-                        if sel_comp: filtered_pur = filtered_pur[filtered_pur[c_comp].isin(sel_comp)]
-                    if c_emp and c_emp in filtered_pur.columns:
-                        sel_emp = f3.multiselect("👤 الموظف المتابع", filtered_pur[c_emp].unique(), key="pur_emp")
-                        if sel_emp: filtered_pur = filtered_pur[filtered_pur[c_emp].isin(sel_emp)]
-                    if c_unit and c_unit in filtered_pur.columns:
-                        sel_unit = f4.multiselect("⚖️ الوحدة", filtered_pur[c_unit].unique(), key="pur_unit")
-                        if sel_unit: filtered_pur = filtered_pur[filtered_pur[c_unit].isin(sel_unit)]
-                        
-                    submitted_pur_cat = st.form_submit_button("🚀 تطبيق الفلاتر")
+                f1, f2, f3, f4 = st.columns(4)
+                if c_ord_date and c_ord_date in filtered_pur.columns:
+                    valid_dates = filtered_pur[c_ord_date].dropna()
+                    if not valid_dates.empty:
+                        min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
+                        use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False, key="pur_chk")
+                        if use_date_pur:
+                            date_range = f1.date_input("اختر فترة الطلب", [min_d, max_d], min_value=min_d, max_value=max_d, key="pur_date")
+                            if len(date_range) == 2:
+                                filtered_pur = filtered_pur[(filtered_pur[c_ord_date].dt.date >= date_range[0]) & (filtered_pur[c_ord_date].dt.date <= date_range[1])]
+                if c_comp and c_comp in filtered_pur.columns:
+                    sel_comp = f2.multiselect("🏢 الشركة الموردة", filtered_pur[c_comp].unique(), key="pur_comp")
+                    if sel_comp: filtered_pur = filtered_pur[filtered_pur[c_comp].isin(sel_comp)]
+                if c_emp and c_emp in filtered_pur.columns:
+                    sel_emp = f3.multiselect("👤 الموظف المتابع", filtered_pur[c_emp].unique(), key="pur_emp")
+                    if sel_emp: filtered_pur = filtered_pur[filtered_pur[c_emp].isin(sel_emp)]
+                if c_unit and c_unit in filtered_pur.columns:
+                    sel_unit = f4.multiselect("⚖️ الوحدة", filtered_pur[c_unit].unique(), key="pur_unit")
+                    if sel_unit: filtered_pur = filtered_pur[filtered_pur[c_unit].isin(sel_unit)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
@@ -832,29 +795,29 @@ try:
 
             st.markdown("---")
             st.markdown("### 🛠️ مختبر التحليلات المخصص")
-            with st.form("custom_pur_cat_form"):
-                ca1, ca2 = st.columns(2)
-                pur_cat_cols = [c for c in [c_emp, c_comp, c_unit, c_item, c_arr] if c and c in filtered_pur.columns]
-                pur_num_cols = [c for c in [c_req, c_cur] if c and c in filtered_pur.columns]
-                x_axis = ca1.selectbox("اختر حقل المقارنة:", pur_cat_cols) if pur_cat_cols else None
-                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", pur_num_cols) if pur_num_cols else None
-                submitted_ca_pur_cat = st.form_submit_button("📊 رسم التحليل")
-
-            if submitted_ca_pur_cat and x_axis and y_axis:
-                try:
-                    custom_df = filtered_pur.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
-                    fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
-                    st.plotly_chart(fig_custom, use_container_width=True)
-                except Exception: pass
+            ca1, ca2 = st.columns(2)
+            pur_cat_cols = [c for c in [c_emp, c_comp, c_unit, c_item, c_arr] if c and c in filtered_pur.columns]
+            pur_num_cols = [c for c in [c_req, c_cur] if c and c in filtered_pur.columns]
+            if pur_cat_cols and pur_num_cols:
+                x_axis = ca1.selectbox("اختر حقل المقارنة:", pur_cat_cols, key="pur_cat_x")
+                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", pur_num_cols, key="pur_cat_y")
+                if x_axis and y_axis:
+                    try:
+                        custom_df = filtered_pur.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
+                        fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
+                        fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
+                        st.plotly_chart(fig_custom, use_container_width=True)
+                    except Exception: pass
 
             st.markdown("---")
             with st.expander("📋 عرض السجل الكامل لمشتريات المصنفات"):
                 csv_pur = filtered_pur.to_csv(index=False).encode('utf-8')
                 st.download_button(label="📥 تحميل جدول مشتريات المصنفات (CSV)", data=csv_pur, file_name="pur_cat_data.csv", mime="text/csv")
+                if c_ord_date and c_ord_date in filtered_pur.columns:
+                    filtered_pur[c_ord_date] = filtered_pur[c_ord_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_pur, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
+            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
 
     # ------------------ قسم مشتريات المجزر ------------------
     elif st.session_state.active_tab == 'pur_slh':
@@ -864,31 +827,29 @@ try:
             filtered_slh = df_pur_slh.copy()
 
             with st.expander("🔍 فلاتر مشتريات المجزر", expanded=True):
-                with st.form("pur_slh_form"):
-                    f1, f2, f3, f4 = st.columns(4)
-                    if c_ord_date and c_ord_date in filtered_slh.columns:
-                        valid_dates = filtered_slh[c_ord_date].dropna()
-                        if not valid_dates.empty:
-                            min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
-                            use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False, key="pur_slh_chk")
-                            if use_date_pur:
-                                date_range = f1.date_input("اختر فترة الطلب", [min_d, max_d], min_value=min_d, max_value=max_d, key="pur_slh_date")
-                                if len(date_range) == 2:
-                                    filtered_slh = filtered_slh[(filtered_slh[c_ord_date].dt.date >= date_range[0]) & (filtered_slh[c_ord_date].dt.date <= date_range[1])]
+                f1, f2, f3, f4 = st.columns(4)
 
-                    if c_comp and c_comp in filtered_slh.columns:
-                        sel_comp = f2.multiselect("🏢 الشركة الموردة", filtered_slh[c_comp].unique(), key="pur_slh_comp")
-                        if sel_comp: filtered_slh = filtered_slh[filtered_slh[c_comp].isin(sel_comp)]
+                if c_ord_date and c_ord_date in filtered_slh.columns:
+                    valid_dates = filtered_slh[c_ord_date].dropna()
+                    if not valid_dates.empty:
+                        min_d, max_d = valid_dates.min().date(), valid_dates.max().date()
+                        use_date_pur = f1.checkbox("☑️ تفعيل فلتر تاريخ الطلب", value=False, key="pur_slh_chk")
+                        if use_date_pur:
+                            date_range = f1.date_input("اختر فترة الطلب", [min_d, max_d], min_value=min_d, max_value=max_d, key="pur_slh_date")
+                            if len(date_range) == 2:
+                                filtered_slh = filtered_slh[(filtered_slh[c_ord_date].dt.date >= date_range[0]) & (filtered_slh[c_ord_date].dt.date <= date_range[1])]
 
-                    if c_cat and c_cat in filtered_slh.columns:
-                        sel_cat = f3.multiselect("🏷️ تصنيف المادة", filtered_slh[c_cat].unique(), key="pur_slh_cat")
-                        if sel_cat: filtered_slh = filtered_slh[filtered_slh[c_cat].isin(sel_cat)]
+                if c_comp and c_comp in filtered_slh.columns:
+                    sel_comp = f2.multiselect("🏢 الشركة الموردة", filtered_slh[c_comp].unique(), key="pur_slh_comp")
+                    if sel_comp: filtered_slh = filtered_slh[filtered_slh[c_comp].isin(sel_comp)]
 
-                    if c_arr and c_arr in filtered_slh.columns:
-                        sel_arr = f4.multiselect("⏳ حالة التوريد", filtered_slh[c_arr].unique(), key="pur_slh_arr")
-                        if sel_arr: filtered_slh = filtered_slh[filtered_slh[c_arr].isin(sel_arr)]
-                        
-                    submitted_pur_slh = st.form_submit_button("🚀 تطبيق الفلاتر")
+                if c_cat and c_cat in filtered_slh.columns:
+                    sel_cat = f3.multiselect("🏷️ تصنيف المادة", filtered_slh[c_cat].unique(), key="pur_slh_cat")
+                    if sel_cat: filtered_slh = filtered_slh[filtered_slh[c_cat].isin(sel_cat)]
+
+                if c_arr and c_arr in filtered_slh.columns:
+                    sel_arr = f4.multiselect("⏳ حالة التوريد", filtered_slh[c_arr].unique(), key="pur_slh_arr")
+                    if sel_arr: filtered_slh = filtered_slh[filtered_slh[c_arr].isin(sel_arr)]
 
             st.markdown("<br>", unsafe_allow_html=True)
             k1, k2, k3, k4 = st.columns(4)
@@ -939,29 +900,29 @@ try:
 
             st.markdown("---")
             st.markdown("### 🛠️ مختبر التحليلات المخصص")
-            with st.form("custom_pur_slh_form"):
-                ca1, ca2 = st.columns(2)
-                pur_slh_cat_cols = [c for c in [c_arr, c_comp, c_dept, c_cat, c_unit, c_item] if c and c in filtered_slh.columns]
-                pur_slh_num_cols = [c for c in [c_req, c_cur] if c and c in filtered_slh.columns]
-                x_axis = ca1.selectbox("اختر حقل المقارنة:", pur_slh_cat_cols) if pur_slh_cat_cols else None
-                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", pur_slh_num_cols) if pur_slh_num_cols else None
-                submitted_ca_pur_slh = st.form_submit_button("📊 رسم التحليل")
-
-            if submitted_ca_pur_slh and x_axis and y_axis:
-                try:
-                    custom_df = filtered_slh.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
-                    fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
-                    fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
-                    st.plotly_chart(fig_custom, use_container_width=True)
-                except Exception: pass
+            ca1, ca2 = st.columns(2)
+            pur_slh_cat_cols = [c for c in [c_arr, c_comp, c_dept, c_cat, c_unit, c_item] if c and c in filtered_slh.columns]
+            pur_slh_num_cols = [c for c in [c_req, c_cur] if c and c in filtered_slh.columns]
+            if pur_slh_cat_cols and pur_slh_num_cols:
+                x_axis = ca1.selectbox("اختر حقل المقارنة:", pur_slh_cat_cols, key="pur_slh_x")
+                y_axis = ca2.selectbox("اختر القيمة المراد حسابها:", pur_slh_num_cols, key="pur_slh_y")
+                if x_axis and y_axis:
+                    try:
+                        custom_df = filtered_slh.groupby(x_axis)[y_axis].sum().reset_index().sort_values(by=y_axis, ascending=False).head(20)
+                        fig_custom = px.bar(custom_df, x=x_axis, y=y_axis, color=y_axis, color_continuous_scale='Magma', text_auto='.2s', title=f"مقارنة {y_axis} حسب {x_axis}")
+                        fig_custom.update_layout(xaxis_title="", yaxis_title="", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#cbd5e1'))
+                        st.plotly_chart(fig_custom, use_container_width=True)
+                    except Exception: pass
 
             st.markdown("---")
             with st.expander("📋 عرض السجل الكامل لمشتريات المجزر"):
                 csv_pur_slh = filtered_slh.to_csv(index=False).encode('utf-8')
                 st.download_button(label="📥 تحميل جدول مشتريات المجزر (CSV)", data=csv_pur_slh, file_name="pur_slh_data.csv", mime="text/csv")
+                if c_ord_date and c_ord_date in filtered_slh.columns:
+                    filtered_slh[c_ord_date] = filtered_slh[c_ord_date].dt.strftime('%Y-%m-%d')
                 st.dataframe(filtered_slh, use_container_width=True)
         else:
-            st.warning("⚠️ جاري سحب البيانات أو لا توجد بيانات متاحة.")
+            st.warning("⚠️ جاري سحب البيانات... يرجى الانتظار ثواني.")
 
 except Exception as e:
     pass
